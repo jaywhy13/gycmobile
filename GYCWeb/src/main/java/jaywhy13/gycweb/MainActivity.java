@@ -6,18 +6,20 @@ import android.view.Menu;
 
 public class MainActivity extends Activity {
 
+    public static final String TAG = "GYCMainActivity";
+
+    GYCListPageFragment mainPageFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
+        mainPageFragment = (GYCListPageFragment) getFragmentManager().findFragmentById(R.id.mainPageFragment);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        // Set the title of the page...
+        mainPageFragment.setPageTitle("Main Page");
+        mainPageFragment.setPageSubTitle("");
+        mainPageFragment.setPageSummary("");
     }
-    
 }
