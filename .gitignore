@@ -6,6 +6,10 @@
 local.properties
 
 */build/
-
+build.gradle
+gradle-*.*
+gradlew*
+*.gradle
 *~
 *.swp
+~$*
