@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="7"
+        android:minSdkVersion="11"
         android:targetSdkVersion="16" />
 
     <application
@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PresenterListActivity"/>
+        <activity android:name=".PageListFragment"/>
+        <activity android:name=".MusicSideBarFragment"/>
+        <activity android:name=".GYCListPageFragment"/>
     </application>
 
 </manifest>
