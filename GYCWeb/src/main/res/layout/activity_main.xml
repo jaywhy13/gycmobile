@@ -8,8 +8,7 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_height="match_parent">
 
         <ImageView
                 android:layout_width="wrap_content"
@@ -18,37 +17,13 @@
                 android:layout_gravity="center"
                 android:src="@drawable/gyc_logo"/>
 
-        <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right">
+        <fragment
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                class="jaywhy13.gycweb.GYCListPageFragment"
+                android:id="@+id/mainPageFragment"
+                tools:layout="@layout/fragment_list_page">
+        </fragment>
 
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Share"
-                    android:id="@+id/shareButton"
-                    android:layout_gravity="center"/>
-
-            <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:text="Settings"
-                    android:id="@+id/settingsButton"/>
-        </LinearLayout>
-
-        <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom">
-
-            <ListView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/listView"/>
-        </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>
