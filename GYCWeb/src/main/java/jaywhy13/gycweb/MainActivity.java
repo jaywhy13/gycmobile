@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
+import jaywhy13.gycweb.media.GYCMedia;
+
 public class MainActivity extends Activity {
 
     public static final String TAG = "GYCMainActivity";
@@ -21,5 +23,7 @@ public class MainActivity extends Activity {
         mainPageFragment.setPageTitle("Main Page");
         mainPageFragment.setPageSubTitle("");
         mainPageFragment.setPageSummary("");
+
+//        GYCMedia.addMusicSideBar(getFragmentManager(), R.id.mainPageView);
     }
 }
