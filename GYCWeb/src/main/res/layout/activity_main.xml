@@ -14,14 +14,14 @@
         <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView"
+                android:id="@+id/gyc_logo"
                 android:layout_gravity="center"
                 android:src="@drawable/gyc_logo"/>
 
         <fragment
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                class="jaywhy13.gycweb.GYCListPageFragment"
+                class="jaywhy13.gycweb.fragments.GYCListPageFragment"
                 android:id="@+id/mainPageFragment"
                 tools:layout="@layout/fragment_list_page">
         </fragment>
