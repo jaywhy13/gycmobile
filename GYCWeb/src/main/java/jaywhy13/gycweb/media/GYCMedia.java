@@ -4,9 +4,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.util.Log;
 
-import jaywhy13.gycweb.MainActivity;
-import jaywhy13.gycweb.MusicSideBarFragment;
-import jaywhy13.gycweb.R;
+import jaywhy13.gycweb.GYCMainActivity;
+import jaywhy13.gycweb.fragments.MusicSideBarFragment;
 
 /**
  * Created by jay on 9/4/13.
@@ -21,7 +20,7 @@ public class GYCMedia {
             MusicSideBarFragment fragment = new MusicSideBarFragment();
             transaction.add(targetView, fragment, "MUSICSIDEBAR");
             transaction.commit();
-            Log.d(MainActivity.TAG, "Successfully addded the music sidebar");
+            Log.d(GYCMainActivity.TAG, "Successfully addded the music sidebar");
         }
     }
 
