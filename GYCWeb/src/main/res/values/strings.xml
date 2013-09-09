@@ -7,5 +7,12 @@
     </string>
     <string name="hello_world" >Hello world!
     </string>
-
+    <string name="presenter_list_page_title">Presenters</string>
+    <string name="presenter_detail_page_title">Presenter</string>
+    <string name="event_list_page_title">Events</string>
+    <string name="event_detail_page_title">Event</string>
+    <string name="sermon_list_page_title">Sermons</string>
+    <string name="sermon_detail_page_title">Sermon</string>
+    <string name="blog_list_page_title">Blogs</string>
+    <string name="blog_detail_page_title">Blog</string>
 </resources>
