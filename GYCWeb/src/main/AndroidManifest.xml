@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen">
         <activity
-            android:name="jaywhy13.gycweb.MainActivity"
+            android:name=".GYCMainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,9 +23,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".PageListFragment"/>
-        <activity android:name=".MusicSideBarFragment"/>
-        <activity android:name=".GYCListPageFragment"/>
-        <activity android:name=".GYCDetailPageFragment"/>
+        <activity android:name=".fragments.MusicSideBarFragment"/>
+        <activity android:name=".fragments.GYCListPageFragment"/>
+        <activity android:name=".fragments.GYCDetailPageFragment"/>
+        <activity android:name=".screens.GYCPresenterList"/>
+        <activity android:name=".screens.GYCPresenterDetail"/>
     </application>
 
 </manifest>
