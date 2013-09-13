@@ -27,7 +27,7 @@ public class GYCPresenterDetail extends Activity {
         detailPageFragment.setPageSubTitle(getPageSubTitle());
     }
 
-    /**
+     /**
      * Returns a link to the detailPageFragment that contains the title, sub title, action area and list view
      * @return
      */

@@ -75,7 +75,7 @@ public class GYCListPageFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     String menuCaption = menuHeadings[i];
-                    Log.d(GYCMainActivity.TAG, "User clicked: " + menuCaption);
+                    Log.d(GYCMainActivity.TAG, "The user clicked: " + menuCaption);
                     menuable.menuItemClicked(i, menuCaption);
                 }
             };
