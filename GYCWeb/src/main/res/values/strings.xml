@@ -15,4 +15,6 @@
     <string name="sermon_detail_page_title">Sermon</string>
     <string name="blog_list_page_title">Blogs</string>
     <string name="blog_detail_page_title">Blog</string>
+    <string name="theme_list_page_title">Themes</string>
+    <string name="theme_detail_page_title">Theme</string>
 </resources>
