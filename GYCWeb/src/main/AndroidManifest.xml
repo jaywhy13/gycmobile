@@ -22,12 +22,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PageListFragment"/>
-        <activity android:name=".fragments.MusicSideBarFragment"/>
-        <activity android:name=".fragments.GYCListPageFragment"/>
-        <activity android:name=".fragments.GYCDetailPageFragment"/>
         <activity android:name=".screens.GYCPresenterList"/>
         <activity android:name=".screens.GYCPresenterDetail"/>
+        <activity android:name=".screens.GYCEventList" />
+        <activity android:name=".screens.GYCEventDetail" />
+        <activity android:name=".screens.GYCSermonList" />
+        <activity android:name=".screens.GYCSermonDetail" />
+        <activity android:name=".screens.GYCBlogList" />
+        <activity android:name=".screens.GYCBlogDetail" />
+        <activity android:name=".screens.GYCThemeList" />
+        <activity android:name=".screens.GYCThemeDetail" />
+        <provider android:authorities="jaywhy13.gycweb.providers.GYCProvider" android:exported="false" android:name="jaywhy13.gycweb.providers.GYCProvider">
+
+        </provider>
     </application>
 
 </manifest>
