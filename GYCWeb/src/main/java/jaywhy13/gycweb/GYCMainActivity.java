@@ -1,5 +1,7 @@
 package jaywhy13.gycweb;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,7 +39,26 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
         mainPageFragment.setPageSubTitle("");
         mainPageFragment.setPageSummary("");
 
-        Toast.makeText(this, "Hello world", Toast.LENGTH_SHORT).show();
+        // check if the first sync is complete
+        if(!SyncTask.isFirstSyncComplete(this)){
+
+            // Show the loading dialog
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setCancelable(false);
+            dialog.setMessage(getString(R.string.sync_message));
+
+            // create a new sync task...
+            SyncTask syncTask = new SyncTask(this){
+                @Override
+                protected void onPostExecute(Object o) {
+                    dialog.dismiss();
+                }
+            };
+
+            // Start the task and show the loading dialog...
+            dialog.show();
+            syncTask.execute();
+        }
 
 //        GYCMedia.addMusicSideBar(getFragmentManager(), R.id.mainPageView);
     }
@@ -92,29 +113,6 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
     }
 
     public void testProvider(View view){
-        AsyncTask task = new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                Log.d(TAG, "Starting to test our providers");
-                ContentValues values = new ContentValues();
-                values.put(GYCProviderMetadata.PresenterTableMetadata.PRESENTER_NAME, "Jeremy Taylor");
-                values.put(GYCProviderMetadata.PresenterTableMetadata.PRESENTER_NUM_SERIES, 25);
-                values.put(GYCProviderMetadata.PresenterTableMetadata.PRESENTER_NUM_SERMONS, 45);
-                getContentResolver().insert(GYCProviderMetadata.PresenterTableMetadata.CONTENT_URI, values);
-
-                // Test retrieval...
-                Cursor cursor = getContentResolver().query(GYCProviderMetadata.PresenterTableMetadata.CONTENT_URI, new String[] {GYCProviderMetadata.PresenterTableMetadata.PRESENTER_NAME}, null, null, null);
-                for(cursor.moveToFirst() ; !cursor.isAfterLast(); cursor.moveToNext()){
-                    int nameIndex = cursor.getColumnIndex(GYCProviderMetadata.PresenterTableMetadata.PRESENTER_NAME);
-                    String presenterName = cursor.getString(nameIndex);
-                    Log.d(TAG, "Found a presenter: " + presenterName);
-                }
-                return "Done";
-            }
-        };
-
-        SyncTask sTask = new SyncTask();
-        sTask.execute();
     }
 
 }
