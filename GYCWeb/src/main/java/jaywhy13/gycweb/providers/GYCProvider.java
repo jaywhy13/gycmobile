@@ -13,7 +13,12 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.HashMap;
+
 import jaywhy13.gycweb.GYCMainActivity;
+import jaywhy13.gycweb.models.Event;
+import jaywhy13.gycweb.models.Model;
+import jaywhy13.gycweb.models.Presenter;
 
 /**
  * The GYCProvider will be the content provider for all the different database types
@@ -23,6 +28,16 @@ import jaywhy13.gycweb.GYCMainActivity;
  * Created by jay on 9/10/13.
  */
 public class GYCProvider extends ContentProvider {
+
+    public static Model[] models = new Model [] {
+            new Presenter(), new Event()
+    };
+
+    /**
+     * Maps the uri indicator to the model
+     */
+    private static HashMap<Integer, Model> uriMatchModelMap = new HashMap<Integer, Model>();
+
 
     /**
      * A uri matcher for storing all the content type URI's
@@ -38,7 +53,44 @@ public class GYCProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         // Add the uri's for presenters, sermons, etc...
         Log.d(GYCMainActivity.TAG, "Registering uris");
-        GYCProviderMetadata.registerUris(uriMatcher);
+        for(int i = 0; i < models.length; i++){
+            Model model = models[i];
+            int collectionIndicator = i * 2;
+            int itemIndicator = collectionIndicator + 1;
+
+            uriMatcher.addURI(Model.AUTHORITY, model.getTableName(), collectionIndicator);
+            uriMatcher.addURI(Model.AUTHORITY, model.getTableName() + "/#", itemIndicator);
+
+            uriMatchModelMap.put(new Integer(collectionIndicator), model);
+            uriMatchModelMap.put(new Integer(itemIndicator), model);
+        }
+    }
+
+    public static Model getModelForUri(Uri uri){
+        int match = uriMatcher.match(uri);
+        if(match == UriMatcher.NO_MATCH){
+            return null;
+        }
+        return uriMatchModelMap.get(new Integer(match));
+    }
+
+    /**
+     * Returns the mime type for the given uri (this mime type is either for the collection or for an item)
+     * @param uri
+     * @return
+     */
+    public static String getMimeTypeForUri(Uri uri){
+        int match = uriMatcher.match(uri);
+        if(match == UriMatcher.NO_MATCH){
+            return null;
+        }
+
+        Model model = getModelForUri(uri);
+        if(match == 0 || match % 2 == 0){
+            return model.getModelMimeType();
+        } else {
+            return model.getContentMimeType();
+        }
     }
 
     /**
@@ -51,37 +103,44 @@ public class GYCProvider extends ContentProvider {
 
         GYCDatabaseHelper(Context context){
             // Supply the ocntext to the constructor and the database name and so on...
-            super(context, GYCProviderMetadata.DATABASE_NAME, null, GYCProviderMetadata.DATABASE_VERSION);
+            super(context, Model.DATABASE_NAME, null, Model.DATABASE_VERSION);
         }
 
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            GYCProviderMetadata.createTables(sqLiteDatabase);
+            for(Model model : models){
+                String sql = model.getCreateSQL();
+                sqLiteDatabase.execSQL(sql);
+            }
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
-            Log.d(GYCMainActivity.TAG, "Nothing to upgrade");
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int v1, int v2) {
+            // TODO: Drop and recreate here
         }
     }
 
 
+    /**
+     * Creation of the GYCProvider
+     * @return
+     */
     @Override
     public boolean onCreate() {
+        // Create the database helper and save the context
         databaseHelper = new GYCDatabaseHelper(getContext());
         return true;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        int match = uriMatcher.match(uri);
-        if(match == UriMatcher.NO_MATCH){
+        Model model = getModelForUri(uri);
+        if(model == null){
             throw new IllegalArgumentException("Invalid URI requested: " + uri);
         }
-        GYCProviderMetadata.TableMetadata metadata = GYCProviderMetadata.getTableMetadataForUriMatch(match);
 
-        String tableName = metadata.getTableName();
-        String defaultSortOrder = metadata.getDefaultSortOrder();
+        String tableName = model.getTableName();
+        String defaultSortOrder = model.getDefaultSortOrder();
 
         if(sortOrder == null){
             sortOrder = defaultSortOrder;
@@ -98,16 +157,11 @@ public class GYCProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        int match = uriMatcher.match(uri);
-        if(match == UriMatcher.NO_MATCH){
+        String mimeType = getMimeTypeForUri(uri);
+        if(mimeType == null){
             throw new IllegalArgumentException("Invalid URI requested: " + uri);
         }
-        GYCProviderMetadata.TableMetadata metadata = GYCProviderMetadata.getTableMetadataForUriMatch(match);
-        if(match == 0 || match % 2 == 0){
-            return metadata.getContentType();
-        } else {
-            return metadata.getContentItemType();
-        }
+        return mimeType;
     }
 
     @Override
@@ -116,7 +170,8 @@ public class GYCProvider extends ContentProvider {
         if(match == UriMatcher.NO_MATCH){
             throw new IllegalArgumentException("Invalid URI requested: " + uri);
         }
-        GYCProviderMetadata.TableMetadata metadata = GYCProviderMetadata.getTableMetadataForUriMatch(match);
+
+        Model model = getModelForUri(uri);
         if(match > 0 && match % 2 != 0){
             throw new IllegalArgumentException("Cannot insert into uri: " + uri);
         }
@@ -127,24 +182,26 @@ public class GYCProvider extends ContentProvider {
         }
 
         Long now = System.currentTimeMillis();
-        contentValues.put(metadata.getCreatedFieldName(), now);
-        contentValues.put(metadata.getModifiedFieldName(), now);
+        contentValues.put(model.getCreatedFieldName(), now);
+        contentValues.put(model.getModifiedFieldName(), now);
 
-        long rowId = db.insert(metadata.getTableName(), metadata.getLabelField(), contentValues);
-        return ContentUris.withAppendedId(metadata.getContentURI(), rowId);
+        long rowId = db.insert(model.getTableName(), model.getLabelField(), contentValues);
+        return ContentUris.withAppendedId(model.getModelURI(), rowId);
     }
 
     @Override
     public int delete(Uri uri, String where, String[] whereArgs) {
         int match = uriMatcher.match(uri);
+
         if(match == UriMatcher.NO_MATCH){
             throw new IllegalArgumentException("Invalid URI requested: " + uri);
         }
-        GYCProviderMetadata.TableMetadata metadata = GYCProviderMetadata.getTableMetadataForUriMatch(match);
+
+        Model model = getModelForUri(uri);
 
         int count = 0;
 
-        String tableName = metadata.getTableName();
+        String tableName = model.getTableName();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         if(match == 0 || match % 2 == 0){
             // delete the entire collection
@@ -153,9 +210,8 @@ public class GYCProvider extends ContentProvider {
             // delete a specific one
             String rowId = uri.getPathSegments().get(1);
             count = db.delete(tableName,
-                    metadata._ID + " = " + rowId + (TextUtils.isEmpty(where) ? "" : " AND (" + where + ")"), whereArgs);
+                    model.getIdFieldName() + " = " + rowId + (TextUtils.isEmpty(where) ? "" : " AND (" + where + ")"), whereArgs);
         }
-
         return count;
     }
 
@@ -165,20 +221,21 @@ public class GYCProvider extends ContentProvider {
         if(match == UriMatcher.NO_MATCH){
             throw new IllegalArgumentException("Invalid URI requested: " + uri);
         }
-        GYCProviderMetadata.TableMetadata metadata = GYCProviderMetadata.getTableMetadataForUriMatch(match);
+
+        Model model = getModelForUri(uri);
 
         int count = 0;
 
-        String tableName = metadata.getTableName();
+        String tableName = model.getTableName();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         if(match == 0 || match % 2 == 0){
-            // update a subset of the collection
+            // updateValues a subset of the collection
             count = db.update(tableName, contentValues, where, whereArgs);
         } else {
             // delete a specific one
             String rowId = uri.getPathSegments().get(1);
             count = db.update(tableName, contentValues,
-                    metadata._ID + " = " + rowId + (TextUtils.isEmpty(where) ? "" : " AND (" + where + ")"), whereArgs);
+                    model.getIdFieldName() + " = " + rowId + (TextUtils.isEmpty(where) ? "" : " AND (" + where + ")"), whereArgs);
         }
         return count;
     }
