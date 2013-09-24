@@ -17,4 +17,7 @@
     <string name="blog_detail_page_title">Blog</string>
     <string name="theme_list_page_title">Themes</string>
     <string name="theme_detail_page_title">Theme</string>
+    <string name="GYC_PREFERENCES">gyc_preferences</string>
+    <string name="FIRST_SYNC_COMPLETE">first_sync_complete</string>
+    <string name="sync_message">Loading... please wait</string>
 </resources>
