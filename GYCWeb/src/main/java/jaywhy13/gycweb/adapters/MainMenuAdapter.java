@@ -1,15 +1,20 @@
 package jaywhy13.gycweb.adapters;
 
 
+import android.app.ActionBar;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import jaywhy13.gycweb.GYCMainActivity;
 import jaywhy13.gycweb.R;
+import jaywhy13.gycweb.views.MainMenuLinearLayout;
 
 /**
  * An adapter provided to manage all the different menus in the app. This adapter allows
@@ -27,6 +32,8 @@ public class MainMenuAdapter extends ArrayAdapter<String> {
      */
     private final int [] menuIcons;
 
+    private int [] backgroundColors = null;
+
     private final Context context;
 
     public MainMenuAdapter(Context context, int textViewResourceId, String [] values, int [] icons){
@@ -34,6 +41,15 @@ public class MainMenuAdapter extends ArrayAdapter<String> {
         this.menuTitles = values;
         this.menuIcons = icons;
         this.context = context;
+    }
+
+
+    public MainMenuAdapter(Context context, int textViewResourceId, String [] values, int [] icons, int [] backgroundColors){
+        super(context, textViewResourceId, values);
+        this.menuTitles = values;
+        this.menuIcons = icons;
+        this.context = context;
+        this.backgroundColors = backgroundColors;
     }
 
     @Override
@@ -51,11 +67,25 @@ public class MainMenuAdapter extends ArrayAdapter<String> {
         int menuIconResource = this.menuIcons[position];
         String menuTitle = this.menuTitles[position];
 
+        MainMenuLinearLayout menuItem = (MainMenuLinearLayout) rowView.findViewById(R.id.menu_item_container);
+        if(position % 2 == 0){
+            menuItem.setDirection(MainMenuLinearLayout.DOWN);
+        } else {
+            menuItem.setDirection(MainMenuLinearLayout.UP);
+        }
+
+        if(backgroundColors != null){
+            int backgroundColor = backgroundColors.length > position ? backgroundColors[position] : 0xFFFF0000;
+            menuItem.setMenuBackgroundColor(backgroundColor);
+        }
+
         ImageView icon = (ImageView) rowView.findViewById(R.id.menu_icon);
         TextView caption = (TextView) rowView.findViewById(R.id.menu_caption);
 
         icon.setImageResource(menuIconResource);
         caption.setText(menuTitle);
+
+
 
         return rowView;
     }
