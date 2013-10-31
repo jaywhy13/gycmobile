@@ -24,4 +24,10 @@ public interface GYCMenuable {
      */
     public void menuItemClicked(int position, String caption);
 
+    /**
+     * Returns a list of colors for the triangle-rect background fill
+     * @return
+     */
+    public int [] getMenuBackgroundColors();
+
 }
