@@ -19,6 +19,7 @@ import jaywhy13.gycweb.GYCMainActivity;
 import jaywhy13.gycweb.models.Event;
 import jaywhy13.gycweb.models.Model;
 import jaywhy13.gycweb.models.Presenter;
+import jaywhy13.gycweb.models.Sermon;
 
 /**
  * The GYCProvider will be the content provider for all the different database types
@@ -29,8 +30,11 @@ import jaywhy13.gycweb.models.Presenter;
  */
 public class GYCProvider extends ContentProvider {
 
+    /**
+     * Stores the list of models that will be accessible via the ContentProvider
+     */
     public static Model[] models = new Model [] {
-            new Presenter(), new Event()
+            new Presenter(), new Event(), new Sermon()
     };
 
     /**
@@ -110,6 +114,7 @@ public class GYCProvider extends ContentProvider {
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
             for(Model model : models){
                 String sql = model.getCreateSQL();
+                Log.d(GYCMainActivity.TAG, "Creating table for " + model.getTableName() + " with SQL: " +  sql);
                 sqLiteDatabase.execSQL(sql);
             }
         }

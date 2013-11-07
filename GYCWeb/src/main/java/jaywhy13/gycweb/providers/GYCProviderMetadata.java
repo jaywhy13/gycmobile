@@ -11,6 +11,7 @@ import java.net.URI;
 import java.util.HashMap;
 
 import jaywhy13.gycweb.GYCMainActivity;
+import jaywhy13.gycweb.models.Model;
 
 /**
  * Created by jay on 9/10/13.
@@ -18,16 +19,10 @@ import jaywhy13.gycweb.GYCMainActivity;
 public class GYCProviderMetadata {
     public static final String AUTHORITY = "jaywhy13.gycweb.providers.GYCProvider";
 
-    public static final String DATABASE_NAME = "gycmobile.db";
-    public static final int DATABASE_VERSION = 1;
-    public static final String PRESENTERS_TABLE_NAME = "presenters";
-    public static final String SERMONS_TABLE_NAME = "sermons";
-    public static final String EVENTS_TABLE_NAME = "events";
-    public static final String BLOGS_TABLE_NAME = "blogs";
-
     public static TableMetadata [] metadatas = new TableMetadata[]{
         new PresenterTableMetadata(), new SermonTableMetadata()
     };
+
 
 
     /**
