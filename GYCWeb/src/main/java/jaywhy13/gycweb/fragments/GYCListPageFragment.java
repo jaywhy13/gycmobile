@@ -23,6 +23,7 @@ import jaywhy13.gycweb.adapters.MainMenuAdapter;
  */
 public class GYCListPageFragment extends Fragment {
 
+    private int menuItemResource = R.layout.menu_item;
     /**
      * The title for the page
      */
@@ -54,22 +55,28 @@ public class GYCListPageFragment extends Fragment {
         pageSummary = (TextView) view.findViewById(R.id.pageSummary);
         pageListView = (ListView) view.findViewById(R.id.pageList);
         actionAreaView = (LinearLayout) view.findViewById(R.id.actionAreaView);
-
-        // Setup the list view adapter and click events based on the Activity
-        setupPageList();
         return view;
+    }
+
+    public int getMenuItemResource(){
+        return menuItemResource;
+    }
+
+    public void setMenuItemResource(int menuItemResource) {
+        this.menuItemResource = menuItemResource;
     }
 
     /**
      * This method checks if the Activity implements GYCMenuable and
      * adds the menu headings and icons as is needed to populate the menu.
      */
-    protected void setupPageList() {
+    public void setupPageList() {
         if (getActivity() instanceof GYCMenuable) {
             final GYCMenuable menuable = (GYCMenuable) getActivity();
             final String menuHeadings[] = menuable.getMenuHeadings();
             final int menuIcons[] = menuable.getMenuIcons();
-            MainMenuAdapter adapter = new MainMenuAdapter(getActivity(), R.layout.menu_item, menuHeadings, menuIcons);
+            final int backgroundColors [] = menuable.getMenuBackgroundColors();
+            MainMenuAdapter adapter = new MainMenuAdapter(getActivity(), getMenuItemResource(), menuHeadings, menuIcons, backgroundColors);
             pageListView.setAdapter(adapter);
             ListView.OnItemClickListener listener = new ListView.OnItemClickListener() {
                 @Override
@@ -133,4 +140,31 @@ public class GYCListPageFragment extends Fragment {
         return pageListView;
     }
 
+    public void hidePageTitle(){
+        if(pageTitle != null){
+            pageTitle.setVisibility(View.GONE);
+        }
+    }
+
+    public void hidePageSubTitle(){
+        if(pageTitle != null){
+            pageSubTitle.setVisibility(View.GONE);
+        }
+    }
+
+    public void hidePageSummary(){
+        if(pageTitle != null){
+            pageSummary.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * Hides the title, sub title and summary on the page
+     */
+    public void hideHeadings() {
+        hidePageTitle();
+        hidePageSubTitle();
+        hidePageSubTitle();
+        hidePageSummary();
+    }
 }
