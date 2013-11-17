@@ -4,20 +4,48 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="horizontal"
-              android:id="@+id/mainPageView">
+              android:id="@+id/mainPageView"
+    android:background="#8d9292"
+    android:baselineAligned="false">
 
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+        >
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/gyc_logo"
-            android:layout_gravity="center"
-            android:src="@drawable/gyc_logo"
-            android:onClick="testProvider"/>
+       <LinearLayout android:orientation="vertical"
+           android:layout_width="fill_parent"
+           android:layout_height="120dip"
+           android:background="#003938"
+           style="@style/banner_style">
+           <ImageView android:layout_width="300dp"
+               android:layout_height="wrap_content"
+               android:src="@drawable/cia_logo"
+               style="@style/cia_logo_style" />
+           <TextView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/tagline"
+               android:textColor="#EBEFF1"
+               android:layout_marginTop="-10dp"
+               style="@style/tagline_style"
+               />
+       </LinearLayout>
+
+        <view
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            class="jaywhy13.gycweb.screens.HomeScreenBanner"
+            android:id="@+id/view"
+            android:gravity="bottom|right"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp">
+            <ImageView android:src="@drawable/share_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                />
+        </view>
+
         <fragment
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
