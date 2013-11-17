@@ -222,9 +222,20 @@ public class SyncTask extends AsyncTask {
         while(presenterIdsIterator.hasNext()){
             String id = presenterIdsIterator.next();
             Presenter presenter = presenters.get(id);
-            Log.d(GYCMainActivity.TAG, "Adding presenter to database: " + presenter);
+            //Log.d(GYCMainActivity.TAG, "Adding presenter to database: " + presenter);
             presenter.insert(context.getContentResolver());
         }
+
+        new Sermon().deleteAll(context.getContentResolver());
+        // Add the presenters to the database
+        Iterator<String> sermonIdsIterator = sermons.keySet().iterator();
+        while(sermonIdsIterator.hasNext()){
+            String id = sermonIdsIterator.next();
+            Sermon sermon = sermons.get(id);
+            //Log.d(GYCMainActivity.TAG, "Adding presenter to database: " + presenter);
+            sermon.insert(context.getContentResolver());
+        }
+
 
         return "Done";
     }
