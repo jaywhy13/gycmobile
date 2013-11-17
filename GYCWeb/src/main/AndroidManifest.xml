@@ -12,29 +12,36 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
+        <activity android:name="jaywhy13.gycweb.GYCMainActivity" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCPresenterList" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCPresenterDetail" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCEventList" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCEventDetail" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCSermonList" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCSermonDetail" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCBlogList" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCBlogDetail" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCThemeList" />
+        <activity android:name="jaywhy13.gycweb.screens.GYCThemeDetail" />
+
+        <provider
+            android:name="jaywhy13.gycweb.providers.GYCProvider"
+            android:authorities="jaywhy13.gycweb.providers.GYCProvider"
+            android:exported="false" >
+        </provider>
+
         <activity
-            android:name=".GYCMainActivity"
-            android:label="@string/app_name" >
+            android:name="jaywhy13.gycweb.screens.SplashScreen"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Christ in Audio"
+            android:theme="@style/FullscreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screens.GYCPresenterList"/>
-        <activity android:name=".screens.GYCPresenterDetail"/>
-        <activity android:name=".screens.GYCEventList" />
-        <activity android:name=".screens.GYCEventDetail" />
-        <activity android:name=".screens.GYCSermonList" />
-        <activity android:name=".screens.GYCSermonDetail" />
-        <activity android:name=".screens.GYCBlogList" />
-        <activity android:name=".screens.GYCBlogDetail" />
-        <activity android:name=".screens.GYCThemeList" />
-        <activity android:name=".screens.GYCThemeDetail" />
-        <provider android:authorities="jaywhy13.gycweb.providers.GYCProvider" android:exported="false" android:name="jaywhy13.gycweb.providers.GYCProvider">
-
-        </provider>
     </application>
 
 </manifest>
