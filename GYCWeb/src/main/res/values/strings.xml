@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" >GYCWeb
-    </string>
-    <string name="action_settings" >Settings
-    </string>
-    <string name="hello_world" >Hello world!
-    </string>
+    <string name="app_name">Christ In Audio</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
     <string name="presenter_list_page_title">Presenters</string>
     <string name="presenter_detail_page_title">Presenter</string>
     <string name="event_list_page_title">Events</string>
@@ -20,4 +17,21 @@
     <string name="GYC_PREFERENCES">gyc_preferences</string>
     <string name="FIRST_SYNC_COMPLETE">first_sync_complete</string>
     <string name="sync_message">Loading... please wait</string>
+    <string name="tagline">Messages for a end time</string>
+    <string name="default_font">Champagne &amp; Limousines.ttf</string>
+    <string name="default_font_bold">Champagne &amp; Limousines Bold.ttf</string>
+
+    <declare-styleable name="FontifiedTextView">
+        <attr name="android:fontFamily" />
+        <attr name="android:textStyle" />
+    </declare-styleable>
+    <declare-styleable name="CornerIcon">
+        <attr name="iconBgColor" format="integer" />
+    </declare-styleable>
+
+    <string name="title_activity_splash_screen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="splash_screen_verse">“Therefore go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, and teaching them to obey everything I have commanded you. And surely I am with you always, to the very end of the age.”  Matt 28:16-20</string>
+
 </resources>
