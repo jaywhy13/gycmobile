@@ -1,7 +1,12 @@
 package jaywhy13.gycweb.models;
 
 
+import android.content.ContentResolver;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Parcel;
+
+import java.util.ArrayList;
 
 /**
  * Created by jay on 9/12/13.
@@ -60,8 +65,14 @@ public class Presenter extends Model {
         this.setString(PRESENTER_SLUG, slug);
     }
 
+    public Cursor getSermons(ContentResolver contentResolver){
+        ArrayList<Sermon> sermons = new ArrayList<Sermon>();
+        Sermon s = new Sermon();
+        return s.get(contentResolver, Sermon.SERMON_PRESENTER_ID + "= ?", new String[]{String.valueOf(getId())});
+    }
+
     public String toString(){
-        return "Presenter: " + this.getName() + " found at: " + getSlug() + " has preached " + getNumSermons() + " sermons, in " + getNumSeries() + " series.";
+        return "Presenter: " + this.getName(); // + " found at: " + getSlug() + " has preached " + getNumSermons() + " sermons, in " + getNumSeries() + " series.";
     }
 
     @Override
@@ -113,4 +124,5 @@ public class Presenter extends Model {
     public String getDefaultSortOrder() {
         return PRESENTER_NAME;
     }
+
 }
