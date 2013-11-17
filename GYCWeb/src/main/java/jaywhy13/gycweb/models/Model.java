@@ -4,7 +4,10 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import jaywhy13.gycweb.GYCMainActivity;
+import jaywhy13.gycweb.providers.GYCProvider;
 
 
 /**
@@ -21,7 +25,7 @@ public abstract class Model {
 
     public static final String AUTHORITY = "jaywhy13.gycweb.providers.GYCProvider";
 
-    public static final String DATABASE_NAME = "gycmobile-test.db";
+    public static final String DATABASE_NAME = "cia.db";
     public static final int DATABASE_VERSION = 1;
 
     public static final String CREATED_FIELD_NAME = "created";
@@ -45,6 +49,17 @@ public abstract class Model {
     }
 
     /**
+     * Places the information in the cursor into the model object provided
+     * @param cursor
+     * @return
+     */
+    public static void cursorRowToModel(Model model, Cursor cursor){
+        ContentValues values = new ContentValues();
+        DatabaseUtils.cursorRowToContentValues(cursor, values);
+        model.updateValues(values);
+    }
+
+    /**
      * Fetches items from the database based on the Uri given. If the URI is not supplied,
      * all items of the type will be returned since we use the model uri as the URI.
      * @param contentResolver
@@ -62,6 +77,19 @@ public abstract class Model {
         Cursor cursor = contentResolver.query(uri, projection, selection, selectionArgs, defaultOrderBy);
         return cursor;
     }
+
+    /**
+     * Allows a get by just specifying some filter
+     * @param contentResolver
+     * @param selection
+     * @param selectionArgs
+     * @return
+     */
+    public Cursor get(ContentResolver contentResolver, String selection, String [] selectionArgs){
+        Cursor cursor = contentResolver.query(getModelURI(), null, selection, selectionArgs, getDefaultSortOrder());
+        return cursor;
+    }
+
 
     /**
      * Returns the create SQL for the table
@@ -92,6 +120,10 @@ public abstract class Model {
             return DATE_TYPE;
         }
 
+        if(BaseColumns._ID.equals(fieldName)){
+            return INT_TYPE + " PRIMARY KEY";
+        }
+
         return STRING_TYPE;
     }
 
@@ -103,6 +135,8 @@ public abstract class Model {
      */
     public Cursor get(ContentResolver contentResolver, Uri uri){
         Cursor cursor = contentResolver.query(uri, null, null, null, getDefaultSortOrder());
+        int count = cursor.getCount();
+        Log.d(GYCMainActivity.TAG, "Found " + count + " row(s) for " + getTableName());
         return cursor;
     }
 
@@ -112,7 +146,7 @@ public abstract class Model {
      * @return
      */
     public Cursor get(ContentResolver contentResolver){
-        return get(contentResolver, null);
+        return get(contentResolver, getModelURI());
     }
 
     /**
@@ -220,6 +254,11 @@ public abstract class Model {
     }
 
 
+    public void updateValues(ContentValues values){
+        this.data.putAll(values);
+    }
+
+
     public abstract String [] getFields();
 
     /**
@@ -279,5 +318,15 @@ public abstract class Model {
      * @return
      */
     public abstract String getTableName();
+
+    public ArrayList<GYCProvider.ModelUri> getUrls() {
+        ArrayList<GYCProvider.ModelUri> uris = new ArrayList<GYCProvider.ModelUri>();
+        // Add uri for the collection (list of all of this model)
+        uris.add(new GYCProvider.ModelUri(this, getTableName(), getModelMimeType(), true));
+        // Add uri for item
+        uris.add(new GYCProvider.ModelUri(this, getTableName() + "/#", getModelMimeType(), false));
+
+        return uris;
+    }
 
 }
