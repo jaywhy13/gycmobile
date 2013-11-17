@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/data-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!--
             Theme customizations available in newer API levels can go in
             res/data-vXX/styles.xml, while customizations related to
@@ -14,7 +15,59 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/CIAActionBar</item>
     </style>
+
+    <style name="CIAActionBar">
+ <!-- parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse"> -->
+        <item name="android:background">#151717</item>
+        <item name="android:color">#ECF0F1</item>
+    </style>
+
+    <style name="banner_style">
+        <item name="android:background">#003938</item>
+    </style>
+
+    <style name="cia_logo_style">
+        <item name="android:width">300dip</item>
+        <item name="android:layout_gravity">center_horizontal|right</item>
+        <item name="android:paddingTop">10dip</item>
+        <item name="android:paddingBottom">10dip</item>
+        <item name="android:paddingRight">10dip</item>
+    </style>
+
+    <style name="tagline_style">
+        <item name="android:color">#EBEFF1</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:paddingRight">10dip</item>
+    </style>
+
+    <style name="main_menu_item_style">
+        <item name="android:padding">10dp</item>
+        <item name="android:background">#F1F1F1</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+    <style name="main_menu_icon_style">
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">5dp</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="buttonBarStyle">@style/ButtonBar</item>
+        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
+    </style>
+
+    <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+    <style name="ButtonBarButton" />
 
 </resources>
