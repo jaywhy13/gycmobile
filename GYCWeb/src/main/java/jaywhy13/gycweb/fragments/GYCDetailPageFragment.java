@@ -87,7 +87,7 @@ public class GYCDetailPageFragment extends Fragment {
         }
     }
 
-    public ListView getPageList() {
+    public ListView getPageListView() {
         return pageList;
     }
 
