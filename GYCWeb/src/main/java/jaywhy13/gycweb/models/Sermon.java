@@ -22,8 +22,12 @@ public class Sermon extends Model {
     public static final String SERMON_SLUG = "slug";
     public static final String SERMON_EVENT_ID = "event_id";
     public static final String SERMON_PRESENTER_ID = "presenter_id";
+    public static final String SERMON_PRESENTER_NAME = "presenter_name";
     public static final String SERMON_SITE_URL = "site_url";
     public static final String SERMON_AUDIO_URL = "audio_url";
+
+    public Sermon(){
+    }
 
 
     public Sermon(int id, String title){
@@ -119,6 +123,7 @@ public class Sermon extends Model {
                 SERMON_DURATION,
                 SERMON_AUDIO_URL,
                 SERMON_SITE_URL,
+                SERMON_PRESENTER_NAME,
                 SERMON_PRESENTER_ID,
                 SERMON_EVENT_ID,
                 getCreatedFieldName(),
