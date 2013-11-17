@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import jaywhy13.gycweb.GYCMainActivity;
@@ -38,9 +39,9 @@ public class GYCProvider extends ContentProvider {
     };
 
     /**
-     * Maps the uri indicator to the model
+     * Keeps track of the model uri's
      */
-    private static HashMap<Integer, Model> uriMatchModelMap = new HashMap<Integer, Model>();
+    private static ArrayList<ModelUri> modelUris = new ArrayList<ModelUri>();
 
 
     /**
@@ -57,16 +58,19 @@ public class GYCProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         // Add the uri's for presenters, sermons, etc...
         Log.d(GYCMainActivity.TAG, "Registering uris");
-        for(int i = 0; i < models.length; i++){
-            Model model = models[i];
-            int collectionIndicator = i * 2;
-            int itemIndicator = collectionIndicator + 1;
 
-            uriMatcher.addURI(Model.AUTHORITY, model.getTableName(), collectionIndicator);
-            uriMatcher.addURI(Model.AUTHORITY, model.getTableName() + "/#", itemIndicator);
-
-            uriMatchModelMap.put(new Integer(collectionIndicator), model);
-            uriMatchModelMap.put(new Integer(itemIndicator), model);
+        /**
+         * What we do here is that we used the "index" in the ArrayList as the "match"
+         * number for the URI
+         */
+        for(Model model : models){
+            ArrayList<ModelUri> uris = model.getUrls();
+            for(ModelUri modelUri : uris){
+                int index = modelUris.size();
+                String uri = modelUri.getUri();
+                uriMatcher.addURI(Model.AUTHORITY, modelUri.getUri(), index);
+                modelUris.add(modelUri);
+            }
         }
     }
 
@@ -75,7 +79,7 @@ public class GYCProvider extends ContentProvider {
         if(match == UriMatcher.NO_MATCH){
             return null;
         }
-        return uriMatchModelMap.get(new Integer(match));
+        return modelUris.get(match).getModel();
     }
 
     /**
@@ -88,13 +92,7 @@ public class GYCProvider extends ContentProvider {
         if(match == UriMatcher.NO_MATCH){
             return null;
         }
-
-        Model model = getModelForUri(uri);
-        if(match == 0 || match % 2 == 0){
-            return model.getModelMimeType();
-        } else {
-            return model.getContentMimeType();
-        }
+        return modelUris.get(match).getMimeType();
     }
 
     /**
@@ -177,9 +175,6 @@ public class GYCProvider extends ContentProvider {
         }
 
         Model model = getModelForUri(uri);
-        if(match > 0 && match % 2 != 0){
-            throw new IllegalArgumentException("Cannot insert into uri: " + uri);
-        }
 
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         if(contentValues == null){
@@ -201,14 +196,18 @@ public class GYCProvider extends ContentProvider {
         if(match == UriMatcher.NO_MATCH){
             throw new IllegalArgumentException("Invalid URI requested: " + uri);
         }
+        ModelUri modelUri = modelUris.get(match);
 
         Model model = getModelForUri(uri);
 
         int count = 0;
 
+        Log.d(GYCMainActivity.TAG, "Deleting from uri: " + uri + ", details: " + modelUri);
+
+
         String tableName = model.getTableName();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        if(match == 0 || match % 2 == 0){
+        if(modelUri.isCollection()){
             // delete the entire collection
             count = db.delete(tableName, where, whereArgs);
         } else {
@@ -227,13 +226,14 @@ public class GYCProvider extends ContentProvider {
             throw new IllegalArgumentException("Invalid URI requested: " + uri);
         }
 
+        ModelUri modelUri = modelUris.get(match);
         Model model = getModelForUri(uri);
 
         int count = 0;
 
         String tableName = model.getTableName();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
-        if(match == 0 || match % 2 == 0){
+        if(modelUri.isCollection()){
             // updateValues a subset of the collection
             count = db.update(tableName, contentValues, where, whereArgs);
         } else {
@@ -243,5 +243,48 @@ public class GYCProvider extends ContentProvider {
                     model.getIdFieldName() + " = " + rowId + (TextUtils.isEmpty(where) ? "" : " AND (" + where + ")"), whereArgs);
         }
         return count;
+    }
+
+
+    /**
+     * An encapsulation for the Model's URI's
+     */
+    public static class ModelUri {
+        private String uri;
+        private String mimeType;
+        private boolean collection = false;
+        private Model model;
+
+        public ModelUri(Model model, String uri, String mimeType, boolean collection){
+            this.model = model;
+            this.uri = uri;
+            this.mimeType = mimeType;
+            this.collection = collection;
+        }
+
+        public ModelUri(Model model, String uri, String mimeType){
+            this(model, uri, mimeType, false);
+        }
+
+        public String getUri() {
+            return uri;
+        }
+
+        public String getMimeType() {
+            return mimeType;
+        }
+
+        public Model getModel() {
+            return model;
+        }
+
+        public boolean isCollection() {
+            return collection;
+        }
+
+        @Override
+        public String toString() {
+            return "Uri: " + uri + " for table: " + model.getTableName() + ( collection ? " [collection] " :  "");
+        }
     }
 }
