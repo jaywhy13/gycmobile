@@ -25,10 +25,10 @@ import jaywhy13.gycweb.util.Verses;
  */
 public class GYCPresenterList extends Activity {
 
-    TextView pageTitle;
-    TextView pageSubTitle;
-    GYCListPageFragment listFragment;
-    SimpleCursorAdapter sca = null;
+    protected TextView pageTitle;
+    protected TextView pageSubTitle;
+    protected GYCListPageFragment listFragment;
+    protected SimpleCursorAdapter sca = null;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +60,21 @@ public class GYCPresenterList extends Activity {
      */
     protected CursorAdapter getCursorAdapter(){
         if(sca == null){
-            sca = new SimpleCursorAdapter(this, R.layout.menu_item, getCursor(), new String[]{Presenter.PRESENTER_NAME},
-                    new int [] {R.id.menu_caption}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+            sca = new SimpleCursorAdapter(this, R.layout.menu_item, getCursor(), new String[]{Presenter.PRESENTER_NAME, Presenter.PRESENTER_NUM_SERMONS},
+                    new int [] {R.id.menu_caption, R.id.menu_sub_caption}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+            sca.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+                @Override
+                public boolean setViewValue(View view, Cursor cursor, int i) {
+                    if(cursor.getColumnName(i) == Presenter.PRESENTER_NUM_SERMONS){
+                        TextView textView = (TextView) view;
+                        int numSermons = cursor.getInt(i);
+                        String caption = numSermons == 1 ? "1 sermon" : numSermons + " sermons";
+                        textView.setText(caption);
+                        return true;
+                    }
+                    return false;
+                }
+            });
         }
         return sca;
     }
