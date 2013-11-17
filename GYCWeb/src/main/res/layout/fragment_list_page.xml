@@ -50,10 +50,12 @@
 
         <!-- page list view -->
         <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:id="@+id/pageList"
-                android:layout_gravity="left|center_vertical"/>
+                android:layout_gravity="left|center_vertical"
+            android:divider="@null"
+            />
     </LinearLayout>
 
 </LinearLayout>
