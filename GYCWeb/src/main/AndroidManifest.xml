@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="13"
         android:targetSdkVersion="16" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +25,7 @@
         <activity android:name="jaywhy13.gycweb.screens.GYCBlogDetail" />
         <activity android:name="jaywhy13.gycweb.screens.GYCThemeList" />
         <activity android:name="jaywhy13.gycweb.screens.GYCThemeDetail" />
+        <service android:name=".media.GYCMedia" />
 
         <provider
             android:name="jaywhy13.gycweb.providers.GYCProvider"
@@ -38,7 +40,6 @@
             android:theme="@style/FullscreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
