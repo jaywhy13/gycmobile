@@ -49,31 +49,9 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
         mainPageFragment.hidePageSubTitle();
         mainPageFragment.hidePageSummary();
 
-        // check if the first sync is complete
-        if(!SyncTask.isFirstSyncComplete(this) && getClass() == GYCMainActivity.class && 1==2){
-
-            // Show the loading dialog
-            final ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setCancelable(false);
-            dialog.setMessage(getString(R.string.sync_message));
-
-            // create a new sync task...
-            SyncTask syncTask = new SyncTask(this){
-                @Override
-                protected void onPostExecute(Object o) {
-                    dialog.dismiss();
-                }
-            };
-
-            // Start the task and show the loading dialog...
-            dialog.show();
-            syncTask.execute();
-
-        }
-
+        Log.d(GYCMainActivity.TAG, "onCreate called, gonna setup page list");
         setupPageList();
 
-//        GYCMedia.addMusicSideBar(getFragmentManager(), R.id.mainPageView);
     }
 
     /**
@@ -90,7 +68,7 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
      * @return
      */
     public String[] getMenuHeadings() {
-        return new String[]{"Sermons", "Presenters", "Themes", "Blogs"};
+        return new String[]{"Sermons", "Presenters", "Events"};
     }
 
     /**
@@ -115,8 +93,8 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
             Log.d(TAG, "Opening presenters");
             activityClass = GYCPresenterList.class;
         } else if (position == 2) {
-            Log.d(TAG, "Opening themes");
-            activityClass = GYCThemeList.class;
+            Log.d(TAG, "Opening events");
+            activityClass = GYCEventList.class;
         } else if (position == 3) {
             Log.d(TAG, "Opening blogs");
         }
@@ -131,7 +109,7 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
     @Override
     public int[] getMenuBackgroundColors() {
         return new int[] {
-                0xFF187ab8, 0xFFc11919, 0xFF8e44ad
+               0xFF00a2a5, 0xFF9400a1, 0xFFff5700
         };
     }
 
