@@ -63,6 +63,7 @@ public class GYCListPageFragment extends Fragment {
     }
 
     public void setMenuItemResource(int menuItemResource) {
+        Log.d(GYCMainActivity.TAG, "The resource set for the menu is: " + menuItemResource);
         this.menuItemResource = menuItemResource;
     }
 
