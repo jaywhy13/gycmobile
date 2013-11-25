@@ -22,6 +22,8 @@ import jaywhy13.gycweb.views.MainMenuLinearLayout;
  */
 public class MainMenuAdapter extends ArrayAdapter<String> {
 
+    private int menuResourceId = R.layout.menu_item;
+
     /**
      * Stores the menu titles
      */
@@ -41,6 +43,7 @@ public class MainMenuAdapter extends ArrayAdapter<String> {
         this.menuTitles = values;
         this.menuIcons = icons;
         this.context = context;
+        this.menuResourceId = textViewResourceId;
     }
 
 
@@ -50,6 +53,7 @@ public class MainMenuAdapter extends ArrayAdapter<String> {
         this.menuIcons = icons;
         this.context = context;
         this.backgroundColors = backgroundColors;
+        this.menuResourceId = textViewResourceId;
     }
 
     @Override
@@ -60,32 +64,25 @@ public class MainMenuAdapter extends ArrayAdapter<String> {
         } else {
             // inflate the menu item from resource
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.menu_item, parent, false);
+            rowView = inflater.inflate(menuResourceId, parent, false);
         }
 
         // Setup the icons and the captions
         int menuIconResource = this.menuIcons[position];
         String menuTitle = this.menuTitles[position];
 
-        MainMenuLinearLayout menuItem = (MainMenuLinearLayout) rowView.findViewById(R.id.menu_item_container);
-        if(position % 2 == 0){
-            menuItem.setDirection(MainMenuLinearLayout.DOWN);
-        } else {
-            menuItem.setDirection(MainMenuLinearLayout.UP);
-        }
-
+        ViewGroup menuItem = (ViewGroup) rowView.findViewById(R.id.menu_item_container);
         if(backgroundColors != null){
             int backgroundColor = backgroundColors.length > position ? backgroundColors[position] : 0xFFFF0000;
-            menuItem.setMenuBackgroundColor(backgroundColor);
+            menuItem.setBackgroundColor(backgroundColor);
         }
+
 
         ImageView icon = (ImageView) rowView.findViewById(R.id.menu_icon);
         TextView caption = (TextView) rowView.findViewById(R.id.menu_caption);
 
         icon.setImageResource(menuIconResource);
         caption.setText(menuTitle);
-
-
 
         return rowView;
     }
