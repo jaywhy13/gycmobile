@@ -2,6 +2,8 @@ package jaywhy13.gycweb.models;
 
 
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Parcel;
@@ -15,8 +17,7 @@ public class Presenter extends Model {
 
     public static final String PRESENTER_NAME = "name";
     public static final String PRESENTER_NUM_SERMONS = "num_sermons";
-    public static final String PRESENTER_NUM_SERIES = "num_series";
-    public static final String PRESENTER_SLUG = "slug";
+    public static final String PRESENTER_SITE_URL = "site_url";
     public static final String PRESENTER_CREATED = "created";
     public static final String PRESENTER_MODIFIED = "modified";
 
@@ -36,6 +37,9 @@ public class Presenter extends Model {
         this.setString(PRESENTER_NAME, name);
     }
 
+    public void setSiteUrl(String presenterSiteUrl) {
+        this.setString(PRESENTER_SITE_URL, presenterSiteUrl);
+    }
 
     public String getName() {
         return getString(PRESENTER_NAME, "Unknown Presenter");
@@ -45,30 +49,14 @@ public class Presenter extends Model {
         return getInt(PRESENTER_NUM_SERMONS, 0);
     }
 
-    public int getNumSeries() {
-        return getInt(PRESENTER_NUM_SERIES, 0);
-    }
-
-    public String getSlug() {
-        return getString(PRESENTER_SLUG, "");
-    }
-
     public void setNumSermons(int numSermons) {
         this.setInt(PRESENTER_NUM_SERMONS, numSermons);
     }
 
-    public void setNumSeries(int numSeries) {
-        this.setInt(PRESENTER_NUM_SERIES, numSeries);
-    }
-
-    public void setSlug(String slug) {
-        this.setString(PRESENTER_SLUG, slug);
-    }
-
-    public Cursor getSermons(ContentResolver contentResolver){
+    public CursorLoader getSermons(Context context){
         ArrayList<Sermon> sermons = new ArrayList<Sermon>();
         Sermon s = new Sermon();
-        return s.get(contentResolver, Sermon.SERMON_PRESENTER_ID + "= ?", new String[]{String.valueOf(getId())});
+        return s.getViaCursorLoader(context, Sermon.SERMON_PRESENTER_ID + "= ?", new String[]{String.valueOf(getId())});
     }
 
     public String toString(){
@@ -80,16 +68,15 @@ public class Presenter extends Model {
         return new String[]{
                 getIdFieldName(),
                 PRESENTER_NAME,
-                PRESENTER_NUM_SERIES,
                 PRESENTER_NUM_SERMONS,
-                PRESENTER_SLUG,
+                PRESENTER_SITE_URL,
                 PRESENTER_CREATED,
                 PRESENTER_MODIFIED
         };
     }
 
     public String getFieldType(String fieldName){
-        if(PRESENTER_NUM_SERIES.equals(fieldName) || PRESENTER_NUM_SERMONS.equals(fieldName)){
+        if(PRESENTER_NUM_SERMONS.equals(fieldName)){
             return INT_TYPE;
         }
         return super.getFieldType(fieldName);

@@ -1,6 +1,13 @@
 package jaywhy13.gycweb.models;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.BaseColumns;
+
+import java.util.ArrayList;
 
 /**
  * Created by jay on 9/12/13.
@@ -19,7 +26,6 @@ public class Sermon extends Model {
     public static final String SERMON_SERIES = "series";
     public static final String SERMON_DURATION = "duration";
     public static final String SERMON_DATE = "date";
-    public static final String SERMON_SLUG = "slug";
     public static final String SERMON_EVENT_ID = "event_id";
     public static final String SERMON_PRESENTER_ID = "presenter_id";
     public static final String SERMON_PRESENTER_NAME = "presenter_name";
@@ -43,13 +49,15 @@ public class Sermon extends Model {
         this.setString(SERMON_TITLE, title);
     }
 
-    public String getSlug() {
-        return getString(SERMON_SLUG);
+    public void setPresenterName(String name){
+        this.setString(SERMON_PRESENTER_NAME, name);
     }
 
-    public void setSlug(String slug) {
-        setString(SERMON_SLUG, slug);
+
+    public String getPresenterName() {
+        return getString(SERMON_PRESENTER_NAME);
     }
+
 
     public String getConference() {
         return getString(SERMON_CONFERENCE);
@@ -111,13 +119,18 @@ public class Sermon extends Model {
         return getString(SERMON_AUDIO_URL, "");
     }
 
+    public CursorLoader getOtherSermonsByPresenter(Context context){
+        Sermon s = new Sermon();
+        return s.getViaCursorLoader(context, Sermon.SERMON_PRESENTER_ID + "= ? AND " + BaseColumns._ID + " <> ?",
+                new String[]{String.valueOf(getPresenterId()), String.valueOf(getId())});
+    }
+
     @Override
     public String[] getFields() {
         return new String[]{
                 getIdFieldName(),
                 SERMON_TITLE,
                 SERMON_SERIES,
-                SERMON_SLUG,
                 SERMON_CONFERENCE,
                 SERMON_DATE,
                 SERMON_DURATION,
@@ -140,6 +153,7 @@ public class Sermon extends Model {
         }
         return super.getFieldType(fieldName);
     }
+
 
     @Override
     public Uri getModelURI() {

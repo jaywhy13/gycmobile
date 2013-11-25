@@ -3,6 +3,8 @@ package jaywhy13.gycweb.models;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.CursorLoader;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
@@ -25,7 +27,7 @@ public abstract class Model {
 
     public static final String AUTHORITY = "jaywhy13.gycweb.providers.GYCProvider";
 
-    public static final String DATABASE_NAME = "cia.db";
+    public static final String DATABASE_NAME = "cia-v2.db";
     public static final int DATABASE_VERSION = 1;
 
     public static final String CREATED_FIELD_NAME = "created";
@@ -90,6 +92,13 @@ public abstract class Model {
         return cursor;
     }
 
+    public CursorLoader getViaCursorLoader(Context context, String selection, String [] selectionArgs){
+        return new CursorLoader(context, getModelURI(), null, selection, selectionArgs, getDefaultSortOrder());
+    }
+
+    public CursorLoader getViaCursorLoader(Context context){
+        return new CursorLoader(context, getModelURI(), null, null, null, getDefaultSortOrder());
+    }
 
     /**
      * Returns the create SQL for the table

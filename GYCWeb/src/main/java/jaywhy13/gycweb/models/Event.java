@@ -1,6 +1,12 @@
 package jaywhy13.gycweb.models;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.database.Cursor;
 import android.net.Uri;
+
+import java.util.ArrayList;
 
 /**
  * Created by jay on 9/12/13.
@@ -8,6 +14,7 @@ import android.net.Uri;
 public class Event extends Model {
 
     public static final String EVENT_TITLE = "title";
+    public static final String EVENT_NUM_SERMONS = "num_sermons";
     public static final String TABLE_NAME = "events";
 
     // URI and mime types
@@ -30,6 +37,19 @@ public class Event extends Model {
         return getString(EVENT_TITLE);
     }
 
+    public void setNumSermons(int numSermons){
+        setInt(EVENT_NUM_SERMONS, numSermons);
+    }
+
+    public int getNumSermons(){
+        return getInt(EVENT_NUM_SERMONS, 0);
+    }
+
+    public CursorLoader getSermons(Context context){
+        Sermon s = new Sermon();
+        return s.getViaCursorLoader(context, Sermon.SERMON_EVENT_ID + "= ?", new String[]{String.valueOf(getId())});
+    }
+
     public String toString(){
         return "Event: " + this.getString("title");
     }
@@ -39,6 +59,7 @@ public class Event extends Model {
         return new String[]{
                 getIdFieldName(),
                 EVENT_TITLE,
+                EVENT_NUM_SERMONS,
                 getModifiedFieldName(),
                 getCreatedFieldName()
         };
