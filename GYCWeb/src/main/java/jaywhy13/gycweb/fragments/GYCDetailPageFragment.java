@@ -91,4 +91,7 @@ public class GYCDetailPageFragment extends Fragment {
         return pageList;
     }
 
+    public LinearLayout getActionAreaView() {
+        return actionAreaView;
+    }
 }
