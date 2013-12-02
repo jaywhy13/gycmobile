@@ -1,11 +1,15 @@
 package jaywhy13.gycweb.fragments;
 
 import android.app.Fragment;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,7 +25,7 @@ import jaywhy13.gycweb.adapters.MainMenuAdapter;
  * menu by providing easy methods for populating and responding to menu events.
  * Created by jay on 9/4/13.
  */
-public class GYCListPageFragment extends Fragment {
+public class GYCListPageFragment extends Fragment implements ListView.OnTouchListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     private int menuItemResource = R.layout.menu_item;
     /**
@@ -33,6 +37,10 @@ public class GYCListPageFragment extends Fragment {
      * The sub title for the page
      */
     TextView pageSubTitle;
+
+    private Animation shrinkAnimation;
+
+    private Animation growAnimation;
 
     /**
      * A detail section
@@ -54,7 +62,12 @@ public class GYCListPageFragment extends Fragment {
         pageSubTitle = (TextView) view.findViewById(R.id.pageSubTitle);
         pageSummary = (TextView) view.findViewById(R.id.pageSummary);
         pageListView = (ListView) view.findViewById(R.id.pageList);
+        // Stop drawing the background for us.. ur too kind
+        pageListView.setSelector(new StateListDrawable());
         actionAreaView = (LinearLayout) view.findViewById(R.id.actionAreaView);
+
+        // Load list animations
+        loadListAnimations();
         return view;
     }
 
@@ -88,6 +101,7 @@ public class GYCListPageFragment extends Fragment {
                 }
             };
             pageListView.setOnItemClickListener(listener);
+            pageListView.setOnTouchListener(this);
         }
     }
 
@@ -167,5 +181,35 @@ public class GYCListPageFragment extends Fragment {
         hidePageSubTitle();
         hidePageSubTitle();
         hidePageSummary();
+    }
+
+    private void loadListAnimations(){
+        shrinkAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.shrink_right);
+    }
+
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+            // Log.d(GYCMainActivity.TAG, "Touch is going down");
+        } else if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+          //  Log.d(GYCMainActivity.TAG, "Touch is going up");
+        }
+        return false;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        //Log.d(GYCMainActivity.TAG, "List item " + i + " was clicked");
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        //Log.d(GYCMainActivity.TAG, "List item " + i + " was selected");
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        //Log.d(GYCMainActivity.TAG, "Nothing selected for list item");
     }
 }
