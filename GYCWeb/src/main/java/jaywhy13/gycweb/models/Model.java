@@ -93,7 +93,12 @@ public abstract class Model {
     }
 
     public CursorLoader getViaCursorLoader(Context context, String selection, String [] selectionArgs){
-        return new CursorLoader(context, getModelURI(), null, selection, selectionArgs, getDefaultSortOrder());
+        return getViaCursorLoader(context, selection, selectionArgs, 0, 30);
+    }
+
+
+    public CursorLoader  getViaCursorLoader(Context context, String selection, String [] selectionArgs, int offset, int limit){
+        return new CursorLoader(context, getModelURI(), null, selection, selectionArgs, getDefaultSortOrder()); // +  " OFFSET " + offset + " LIMIT " + limit);
     }
 
     public CursorLoader getViaCursorLoader(Context context){
