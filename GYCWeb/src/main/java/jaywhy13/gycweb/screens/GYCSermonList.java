@@ -1,6 +1,7 @@
 package jaywhy13.gycweb.screens;
 
 import android.app.Activity;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
@@ -33,7 +34,7 @@ public class GYCSermonList extends GYCPresenterList {
     @Override
     protected CursorAdapter getCursorAdapter() {
         if(sca == null){
-            sca = new SimpleCursorAdapter(this, R.layout.menu_item, getCursor(), new String[]{Sermon.SERMON_TITLE, Sermon.SERMON_PRESENTER_NAME, Sermon.SERMON_DURATION},
+            sca = new SimpleCursorAdapter(this, R.layout.menu_item, null, new String[]{Sermon.SERMON_TITLE, Sermon.SERMON_PRESENTER_NAME, Sermon.SERMON_DURATION},
                     new int [] {R.id.menu_caption, R.id.menu_sub_caption, R.id.menu_sub_caption_right}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         }
         return sca;
@@ -48,4 +49,10 @@ public class GYCSermonList extends GYCPresenterList {
     public Class getClassForListItemIntent() {
         return GYCSermonDetail.class;
     }
+
+    @Override
+    public Loader onCreateLoader(int i, Bundle bundle) {
+        return new Sermon().getViaCursorLoader(this);
+    }
+
 }
