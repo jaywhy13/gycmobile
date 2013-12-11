@@ -26,7 +26,6 @@ public class HomeScreenBanner extends LinearLayout {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        Log.d(GYCMainActivity.TAG, "I GOT CALLED");
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
