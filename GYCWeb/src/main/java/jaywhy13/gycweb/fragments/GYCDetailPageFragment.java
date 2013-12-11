@@ -22,6 +22,7 @@ public class GYCDetailPageFragment extends Fragment {
     private TextView pageTitle;
     private TextView pageSubTitle;
     private TextView pageSummary;
+    private TextView listCaption;
     private LinearLayout actionAreaView;
 
 
@@ -38,9 +39,18 @@ public class GYCDetailPageFragment extends Fragment {
         pageSummary = (TextView) view.findViewById(R.id.pageSummary);
         actionAreaView = (LinearLayout) view.findViewById(R.id.actionAreaView);
         pageList = (ListView) view.findViewById(R.id.pageList);
+        listCaption = (TextView) view.findViewById(R.id.listCaption);
 
         return view;
     }
+
+    public void hideHeadings(){
+        pageIcon.setVisibility(View.GONE);
+        pageTitle.setVisibility(View.GONE);
+        pageSubTitle.setVisibility(View.GONE);
+        pageSummary.setVisibility(View.GONE);
+    }
+
 
     /**
      * Sets the title for the page
@@ -85,6 +95,11 @@ public class GYCDetailPageFragment extends Fragment {
         if (actionAreaView != null) {
             actionAreaView.addView(view);
         }
+    }
+
+
+    public TextView getListCaption() {
+        return listCaption;
     }
 
     public ListView getPageListView() {
