@@ -5,7 +5,8 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/data-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar"
+        >
         <!--
             Theme customizations available in newer API levels can go in
             res/data-vXX/styles.xml, while customizations related to
@@ -16,16 +17,28 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:actionBarStyle">@style/CIAActionBar</item>
+        <item name="actionBarStyle">@style/CIAActionBar</item>
+
+
     </style>
 
-    <style name="CIAActionBar">
- <!-- parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse"> -->
-        <item name="android:background">#151717</item>
-        <item name="android:color">#ECF0F1</item>
+    <style name="CIAActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/action_bar_bg_color</item>
+        <item name="background">@color/action_bar_bg_color</item>
+
+        <item name="android:titleTextStyle">@style/CIAActionBarTitleText</item>
+        <!-- Support library compatibility -->
+        <item name="titleTextStyle">@style/CIAActionBarTitleText</item>
+    </style>
+
+    <!-- ActionBar title text -->
+    <style name="CIAActionBarTitleText"
+        parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
     <style name="banner_style">
-        <item name="android:background">#003938</item>
+        <!--<item name="android:background">#003938</item> -->
     </style>
 
     <style name="cia_logo_style">
@@ -44,7 +57,7 @@
 
     <style name="main_menu_item_style">
         <item name="android:padding">10dp</item>
-        <item name="android:background">#F1F1F1</item>
+        <item name="android:background">#FFFFFFFF</item>
         <item name="android:layout_marginTop">20dp</item>
     </style>
 
@@ -56,8 +69,8 @@
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@null</item>
-        <item name="buttonBarStyle">@style/ButtonBar</item>
-        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
+        <!--<item name="buttonBarStyle">@style/ButtonBar</item>
+        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>-->
     </style>
 
     <style name="ButtonBar">
