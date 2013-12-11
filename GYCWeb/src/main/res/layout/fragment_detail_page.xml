@@ -26,10 +26,9 @@
                     android:id="@+id/pageIcon"
                     android:layout_gravity="center"/>
 
-            <TextView
+            <jaywhy13.gycweb.components.FontifiedTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Heading"
                     android:id="@+id/pageTitle"
                     android:layout_gravity="center_horizontal|left|top"/>
@@ -37,10 +36,9 @@
 
 
         <!-- page sub-heading -->
-        <TextView
+        <jaywhy13.gycweb.components.FontifiedTextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
                 android:id="@+id/pageSubTitle"
                 android:layout_gravity="left|top"/>
@@ -56,19 +54,34 @@
         <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
+                android:gravity="left"
+            android:paddingLeft="10dp"
                 android:orientation="horizontal"
                 android:id="@+id/actionAreaView">
         </LinearLayout>
 
+        <!-- list caption -->
+        <jaywhy13.gycweb.components.FontifiedTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listCaption"
+            android:paddingLeft="30dp"
+            android:paddingRight="20dp"
+            android:textColor="#FF001d1c"
+            android:textSize="18sp"
+            android:layout_below="@id/actionAreaView"
+            android:text="Others sermons from Pastor Brown"
+            android:layout_marginTop="25dp"
+            android:textStyle="bold"
+            android:textIsSelectable="false" />
+
 
         <!-- page list view -->
-
-
         <ListView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/pageList"
+            android:paddingLeft="10dp"
                 android:layout_gravity="left|center_vertical"/>
     </LinearLayout>
 
