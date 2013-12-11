@@ -12,8 +12,4 @@ public class GYCThemeDetail extends GYCPresenterDetail {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public String getPageTitle() {
-        return getResources().getString(R.string.theme_detail_page_title);
-    }
 }

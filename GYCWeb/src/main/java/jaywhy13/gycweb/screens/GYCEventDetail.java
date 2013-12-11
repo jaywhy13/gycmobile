@@ -26,11 +26,6 @@ public class GYCEventDetail extends GYCPresenterDetail {
     }
 
     @Override
-    public String getPageTitle() {
-        return event.getTitle();
-    }
-
-    @Override
     protected CursorLoader getCursorLoader() {
         return event.getSermons(this);
     }
@@ -42,11 +37,6 @@ public class GYCEventDetail extends GYCPresenterDetail {
                     new int [] {R.id.menu_caption, R.id.menu_sub_caption}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         }
         return sca;
-    }
-
-    @Override
-    public String getPageSubTitle() {
-        return "";
     }
 
     @Override

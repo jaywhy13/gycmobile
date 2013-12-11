@@ -11,8 +11,4 @@ public class GYCBlogDetail extends GYCPresenterDetail {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public String getPageTitle() {
-        return "GYC Mobile now has an app!";
-    }
 }
