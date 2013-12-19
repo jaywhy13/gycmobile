@@ -1,0 +1,18 @@
+<resources>
+    <declare-styleable name="BannerLayout">
+        <attr name="bannerBg" format="integer"/>
+        <attr name="drawGreenBackground" format="boolean" />
+        <attr name="fadeBackgroundImage" format="boolean" />
+        <attr name="fillParent" format="boolean" />
+        <attr name="backgroundImageOpacity" format="integer" />
+        <attr name="drawCornerIcon" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="FontifiedTextView">
+        <attr name="android:fontFamily" />
+        <attr name="android:textStyle" />
+    </declare-styleable>
+    <declare-styleable name="CornerIcon">
+        <attr name="iconBgColor" format="integer" />
+    </declare-styleable>
+
+</resources>
