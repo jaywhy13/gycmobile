@@ -6,68 +6,63 @@
     android:paddingRight="10dp"
     >
 
-<view
-    android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    style="@style/main_menu_item_style"
-    class="jaywhy13.gycweb.views.MainMenuLinearLayout"
-    android:id="@+id/menu_item_container">
-
-    <ImageView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/menu_icon"
+        style="@style/main_menu_item_style"
+        android:id="@+id/menu_item_container">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/menu_icon"
             android:src="@drawable/cloud_icon"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"
             android:layout_alignParentStart="true"
-        style="@style/main_menu_icon_style"
-        android:adjustViewBounds="false" />
-
-    <LinearLayout android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+            style="@style/main_menu_icon_style"
+            android:adjustViewBounds="false" />
 
         <jaywhy13.gycweb.components.FontifiedTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Menu Item"
+            android:text="Menu Item Title"
             android:id="@+id/menu_caption"
             android:layout_marginLeft="10dp"
-            android:textSize="21sp"
+            android:textSize="19sp"
             android:textIsSelectable="false"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:fontFamily="@string/default_font_bold"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/menu_icon"
+             />
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/second_line">
+            android:text="Menu Item"
+            android:id="@+id/menu_sub_caption"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:layout_toRightOf="@id/menu_icon"
+            android:layout_below="@id/menu_caption"
+            android:singleLine="true"
+            android:textColor="#FF8D8D8D"
+             />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Menu Item"
-                android:id="@+id/menu_sub_caption"
-                android:layout_marginLeft="10dp"
-                android:layout_alignParentLeft="true"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/menu_sub_caption_right"
-                android:layout_toRightOf="@id/menu_sub_caption"
-                android:textSize="14sp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginLeft="10dp"
-                android:gravity="right"
-                 />
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-</view>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/menu_sub_caption_right"
+            android:layout_toRightOf="@id/menu_sub_caption"
+             android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@id/menu_caption"
+            android:gravity="right|end"
+            android:text=""
+            android:textColor="#FF8D8D8D"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 </LinearLayout>
