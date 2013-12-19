@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/headphones2"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/listen_now"
+        android:background="@color/listen_now_bg"
+        android:textSize="16sp"
+        android:textIsSelectable="false"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textAllCaps="true"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:textColor="@color/listen_now_fg"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/listen_now_btn" />
+</LinearLayout>
