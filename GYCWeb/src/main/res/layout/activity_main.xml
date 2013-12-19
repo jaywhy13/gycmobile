@@ -3,56 +3,49 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="horizontal"
+              android:orientation="vertical"
               android:id="@+id/mainPageView"
-    android:background="#8d9292"
+    android:background="@color/bg_color"
     android:baselineAligned="false">
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-        >
-
-       <LinearLayout android:orientation="vertical"
+       <jaywhy13.gycweb.components.BannerLayout android:orientation="vertical"
            android:layout_width="fill_parent"
-           android:layout_height="120dip"
-           android:background="#003938"
+           android:layout_height="160dip"
            style="@style/banner_style">
+
            <ImageView android:layout_width="300dp"
                android:layout_height="wrap_content"
                android:src="@drawable/cia_logo"
-               style="@style/cia_logo_style" />
+               android:id="@+id/cia_logo"
+               style="@style/cia_logo_style"
+               android:layout_alignParentStart="true"
+               android:layout_centerHorizontal="true"
+               />
            <TextView android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:text="@string/tagline"
                android:textColor="#EBEFF1"
                android:layout_marginTop="-10dp"
                style="@style/tagline_style"
+               android:layout_below="@id/cia_logo"
+               android:layout_alignRight="@id/cia_logo"
+               android:paddingRight="10dp"
                />
-       </LinearLayout>
-
-        <view
-            android:layout_width="fill_parent"
-            android:layout_height="50dip"
-            class="jaywhy13.gycweb.screens.HomeScreenBanner"
-            android:id="@+id/view"
-            android:gravity="bottom|right"
-            android:paddingBottom="10dp"
-            android:paddingRight="10dp">
-            <ImageView android:src="@drawable/share_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                />
-        </view>
+           <ImageView android:src="@drawable/share_icon"
+               android:layout_height="wrap_content"
+               android:layout_width="wrap_content"
+               android:layout_alignParentBottom="true"
+               android:layout_alignParentRight="true"
+               android:padding="10dp"
+               />
+       </jaywhy13.gycweb.components.BannerLayout>
 
         <fragment
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 class="jaywhy13.gycweb.fragments.GYCListPageFragment"
                 android:id="@+id/mainPageFragment"
                 tools:layout="@layout/fragment_list_page">
         </fragment>
 
-    </LinearLayout>
 </LinearLayout>
