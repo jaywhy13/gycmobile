@@ -1,7 +1,10 @@
 package jaywhy13.gycweb.screens;
 
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 import jaywhy13.gycweb.GYCMainActivity;
 import jaywhy13.gycweb.R;
 import jaywhy13.gycweb.fragments.GYCListPageFragment;
+import jaywhy13.gycweb.media.GYCMedia;
 import jaywhy13.gycweb.models.Model;
 import jaywhy13.gycweb.models.Presenter;
 import jaywhy13.gycweb.util.Verses;
@@ -23,17 +27,20 @@ import jaywhy13.gycweb.util.Verses;
 /**
  * Created by jay on 9/9/13.
  */
-public class GYCPresenterList extends Activity {
+public class GYCPresenterList extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     protected TextView pageTitle;
     protected TextView pageSubTitle;
     protected GYCListPageFragment listFragment;
     protected SimpleCursorAdapter sca = null;
 
-
     public void onCreate(Bundle savedInstanceState) {
+        long now = System.currentTimeMillis();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        getLoaderManager().initLoader(0, null, this);
 
         pageTitle = (TextView) findViewById(R.id.pageTitle);
         pageSubTitle = (TextView) findViewById(R.id.pageSubTitle);
@@ -42,6 +49,7 @@ public class GYCPresenterList extends Activity {
         setupPage();
         setupPageList();
     }
+
 
     /**
      * Sets up the page, hides different controls and so on...
@@ -60,12 +68,12 @@ public class GYCPresenterList extends Activity {
      */
     protected CursorAdapter getCursorAdapter(){
         if(sca == null){
-            sca = new SimpleCursorAdapter(this, R.layout.menu_item, getCursor(), new String[]{Presenter.PRESENTER_NAME, Presenter.PRESENTER_NUM_SERMONS},
+            sca = new SimpleCursorAdapter(this, R.layout.menu_item, null, new String[]{Presenter.PRESENTER_NAME, Presenter.PRESENTER_NUM_SERMONS},
                     new int [] {R.id.menu_caption, R.id.menu_sub_caption}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
             sca.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
                 @Override
                 public boolean setViewValue(View view, Cursor cursor, int i) {
-                    if(cursor.getColumnName(i) == Presenter.PRESENTER_NUM_SERMONS){
+                    if(cursor.getColumnName(i).equals(Presenter.PRESENTER_NUM_SERMONS)){
                         TextView textView = (TextView) view;
                         int numSermons = cursor.getInt(i);
                         String caption = numSermons == 1 ? "1 sermon" : numSermons + " sermons";
@@ -157,4 +165,18 @@ public class GYCPresenterList extends Activity {
         return getString(R.string.presenter_list_page_title);
     }
 
+    @Override
+    public Loader onCreateLoader(int i, Bundle bundle) {
+        return new Presenter().getViaCursorLoader(this);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        sca.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+        sca.swapCursor(null);
+    }
 }
