@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingRight="10dp"
+    >
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@style/main_menu_item_style"
+        android:id="@+id/menu_item_container">
+
+            <jaywhy13.gycweb.components.FontifiedTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Menu Item"
+                android:id="@+id/menu_caption"
+                android:layout_marginLeft="20dp"
+                android:textSize="25sp"
+                android:textIsSelectable="false"
+                android:singleLine="true"
+                android:textColor="#FFFFFFFF"
+                android:fontFamily="@string/default_font_bold"
+                android:textStyle="bold"
+                android:paddingTop="7dp"
+                android:paddingBottom="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Menu Item"
+                android:id="@+id/menu_sub_caption"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/menu_icon"
+            android:src="@drawable/cloud_icon"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_alignParentEnd="true"
+            style="@style/main_menu_icon_style"
+            android:layout_alignParentStart="false"
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>
