@@ -1,0 +1,10 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="listen_now_bg">#FF08514f</color>
+    <color name="listen_now_fg">#FFedf3f3</color>
+    <color name="listen_now_bg_loading">#FF8D8D8D</color>
+    <color name="listen_now_bg_stop">#FFD60000</color>
+    <color name="bg_color">#FFE0E0E0</color>
+    <color name="action_bar_bg_color">#FF151717</color>
+</resources>
