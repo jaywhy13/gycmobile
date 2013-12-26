@@ -13,16 +13,18 @@
         android:orientation="vertical"
         android:id="@+id/sidebar"></LinearLayout>
 
-        <jaywhy13.gycweb.components.BannerLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            custom:fadeBackgroundImage="true"
-            custom:drawGreenBackground="false"
-            custom:fillParent="false"
-            custom:backgroundImageOpacity="0x78"
-            custom:drawCornerIcon="true"
+            android:layout_height="match_parent"
             >
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/presenter_bg_blurred_trans"
+                android:scaleType="fitStart"
+                android:alpha="0.4"
+                />
 
             <jaywhy13.gycweb.components.FontifiedTextView
                 android:layout_width="match_parent"
@@ -70,7 +72,6 @@
                 android:textSize="22sp"
                 android:layout_below="@id/pageSubTitle"
                 android:text="1 hr 30 mins"
-                android:textStyle="bold"
                 android:textIsSelectable="false" />
 
             <fragment android:layout_height="match_parent" android:layout_width="match_parent" class="jaywhy13.gycweb.fragments.GYCDetailPageFragment"
@@ -80,6 +81,6 @@
                 android:layout_marginTop="20dp"
                 />
 
-            </jaywhy13.gycweb.components.BannerLayout>
+            </RelativeLayout>
 
 </LinearLayout>

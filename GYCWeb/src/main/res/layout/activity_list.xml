@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
@@ -14,51 +14,50 @@
         android:id="@+id/sidebar"/>
 
     <!-- the banner background for the entire page -->
-    <jaywhy13.gycweb.components.BannerLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:id="@+id/mainPageView"
-        android:background="#FFE0E0E0"
         android:baselineAligned="false"
-        custom:fadeBackgroundImage="true"
-        custom:drawGreenBackground="false"
-        custom:fillParent="false"
-        custom:backgroundImageOpacity="0x78"
-        custom:drawCornerIcon="true"
         >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/presenter_bg_blurred_trans"
+            android:scaleType="fitStart"
+            android:alpha="0.4"
+            />
 
 
         <!-- a container for the title of the page and sub title -->
-        <LinearLayout
-            android:orientation="vertical"
+        <jaywhy13.gycweb.components.FontifiedTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="38sp"
+            android:text="@string/presenter_list_page_title"
             android:paddingTop="35dp"
             android:paddingLeft="20dp"
-            android:id="@+id/pageTitleContainer"
+            android:id="@+id/pageTitle"
+            android:fontFamily="@string/default_font_bold"
+            android:textStyle="bold"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true">
+            android:layout_alignParentLeft="true"
+            />
 
-            <jaywhy13.gycweb.components.FontifiedTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="38sp"
-                android:text="@string/presenter_list_page_title"
-                android:id="@+id/pageTitle"
-                android:fontFamily="@string/default_font_bold"
-                android:textStyle="bold" />
+        <jaywhy13.gycweb.components.FontifiedTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pageTitle"
+            android:paddingLeft="20dp"
+            android:id="@+id/pageSubTitle"
+            android:paddingRight="50dp"
+            android:textColor="#FF003937"
+            android:textSize="12sp"
+            />
 
-            <jaywhy13.gycweb.components.FontifiedTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/pageSubTitle"
-                android:paddingRight="50dp"
-                android:textColor="#FF003937"
-                android:textSize="12sp"
-                />
 
-        </LinearLayout>
 
         <ImageView android:src="@drawable/presenter_white"
             android:layout_width="wrap_content"
@@ -73,7 +72,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/pageTitleContainer"
+            android:layout_below="@id/pageSubTitle"
             >
 
             <fragment
@@ -85,5 +84,5 @@
             </fragment>
 
         </LinearLayout>
-    </jaywhy13.gycweb.components.BannerLayout>
-    </LinearLayout>
+    </RelativeLayout>
+</merge>
