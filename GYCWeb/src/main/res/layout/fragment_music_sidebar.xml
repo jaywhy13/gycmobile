@@ -4,56 +4,73 @@
               android:orientation="vertical"
               android:layout_width="wrap_content"
               android:layout_height="match_parent"
-              android:id="@+id/musicSideBar"
-    android:paddingLeft="8dp"
-    android:paddingTop="8dp"
-    android:paddingRight="8dp"
-    android:paddingBottom="8dp">
+    android:background="#FF44807f"
+              android:id="@+id/musicSideBar">
 
-    <ImageView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:background="#FF003938"
+        android:id="@+id/sidebarHeader"
+        android:layout_weight="1" >
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@id/sidebarHeader"
+        android:id="@+id/mediaControls"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:background="#FF095150"
+        >
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/musicNote"
-            android:layout_gravity="center"
-            android:src="@drawable/music_note_placeholder"
-        />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logo"
-            android:id="@+id/textView"
-            android:layout_gravity="center"
+            android:id="@+id/play_pause_btn"
+            android:src="@drawable/play_icon"
+            style="@style/media_button"
             />
 
-    <ImageView
-        android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/stop_btn"
+            android:src="@drawable/stop_icon"
+            style="@style/media_button"
+            />
+
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/prev_btn"
+            android:src="@drawable/prev_icon"
+            style="@style/media_button"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/next_btn"
+            android:src="@drawable/next_icon"
+            style="@style/media_button"
+            />
+
+        </LinearLayout>
+
+    <jaywhy13.gycweb.components.NowPlayingView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/play_pause_btn"
-        android:src="@drawable/play_icon"
-        />
+        android:background="#FF44807f"
+        android:paddingTop="10dp"
+       />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/stop_btn"
-        android:src="@drawable/stop_icon"
-        />
-
-
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/prev_btn"
-        android:src="@drawable/prev_icon"
-        />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/next_btn"
-        android:src="@drawable/next_icon"
-        />
 
 </LinearLayout>
