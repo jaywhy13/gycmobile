@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/presenter_bg_blurred_trans"
+        android:scaleType="fitStart"
+        android:alpha="0.4"
+        />
+
+    <jaywhy13.gycweb.components.FontifiedTextView
+        android:id="@+id/pageTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="60dp"
+        android:text="Search Results"
+        android:textColor="#FF001d1c"
+        android:fontFamily="@string/default_font_bold"
+        android:layout_alignParentStart="true"
+        />
+    <jaywhy13.gycweb.components.FontifiedTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:paddingLeft="10dp"
+        android:text="Jesus is"
+        android:textColor="#FF003937"
+        android:id="@+id/search_results"
+        android:fontFamily="@string/default_font_bold"
+        android:layout_below="@id/pageTitle"
+        />
+
+    <fragment android:layout_height="match_parent" android:layout_width="match_parent" class="jaywhy13.gycweb.fragments.GYCDetailPageFragment"
+        android:id="@+id/detailPageFragment"
+        android:layout_below="@id/search_results"
+        android:layout_marginTop="20dp"
+        />
+</RelativeLayout>

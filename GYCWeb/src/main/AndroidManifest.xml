@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="13"
         android:targetSdkVersion="16" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,6 +15,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data android:name="android.app.default_searchable"
+            android:value="jaywhy13.gycweb.screens.GYCSermonSearchResults" />
+
         <activity android:name="jaywhy13.gycweb.GYCMainActivity" />
         <activity android:name="jaywhy13.gycweb.screens.GYCPresenterList" />
         <activity android:name="jaywhy13.gycweb.screens.GYCPresenterDetail" />
@@ -25,7 +29,16 @@
         <activity android:name="jaywhy13.gycweb.screens.GYCBlogDetail" />
         <activity android:name="jaywhy13.gycweb.screens.GYCThemeList" />
         <activity android:name="jaywhy13.gycweb.screens.GYCThemeDetail" />
-        <service android:name=".media.GYCMedia" />
+        <activity android:name=".screens.GYCSermonSearchResults"
+            android:parentActivityName="./screens.GYCPresenterList">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <service android:name="jaywhy13.gycweb.media.GYCMedia" />
 
         <provider
             android:name="jaywhy13.gycweb.providers.GYCProvider"
@@ -40,8 +53,13 @@
             android:theme="@style/FullscreenTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="jaywhy13.gycweb.screens.TestScreen"
+            android:label="@string/title_activity_test_screen" >
         </activity>
     </application>
 
