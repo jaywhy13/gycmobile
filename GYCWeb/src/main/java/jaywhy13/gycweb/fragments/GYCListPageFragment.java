@@ -66,8 +66,6 @@ public class GYCListPageFragment extends Fragment implements ListView.OnTouchLis
         pageListView.setSelector(new StateListDrawable());
         actionAreaView = (LinearLayout) view.findViewById(R.id.actionAreaView);
 
-        // Load list animations
-        loadListAnimations();
         return view;
     }
 
@@ -183,9 +181,6 @@ public class GYCListPageFragment extends Fragment implements ListView.OnTouchLis
         hidePageSummary();
     }
 
-    private void loadListAnimations(){
-        shrinkAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.shrink_right);
-    }
 
 
     @Override
