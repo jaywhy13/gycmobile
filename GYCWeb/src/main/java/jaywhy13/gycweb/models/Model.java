@@ -105,6 +105,10 @@ public abstract class Model {
         return new CursorLoader(context, getModelURI(), null, null, null, getDefaultSortOrder());
     }
 
+    public CursorLoader getSearchResults(Context context, String query){
+        return new CursorLoader(context, getModelURI(), null, getLabelField() + " LIKE ?", new String[]{"%" + query + "%"}, getDefaultSortOrder());
+    }
+
     /**
      * Returns the create SQL for the table
      * @return
