@@ -22,9 +22,6 @@
     <string name="tagline">Messages for a end time</string>
     <string name="default_font">Champagne &amp; Limousines.ttf</string>
     <string name="default_font_bold">Champagne &amp; Limousines Bold.ttf</string>
-
-
-
     <string name="title_activity_splash_screen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -33,4 +30,6 @@
     <string name="listen_now_loading">Loading ...</string>
     <string name="listen_now_stop">Stop</string>
     <string name="other_sermons_by">Other sermons by</string>
+    <string name="title_activity_test_screen">TestScreen</string>
+    <string name="search_hint">Search for sermons</string>
 </resources>
