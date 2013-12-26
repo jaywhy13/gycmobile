@@ -2,17 +2,22 @@ package jaywhy13.gycweb.screens;
 
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.app.SearchManager;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -140,6 +145,14 @@ public class GYCPresenterList extends Activity implements LoaderManager.LoaderCa
         intent.putExtra("table_name", model.getTableName());
         intent.putExtra("model", model.getValues());
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.fade_out);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
     }
 
     /**
@@ -178,5 +191,20 @@ public class GYCPresenterList extends Activity implements LoaderManager.LoaderCa
     @Override
     public void onLoaderReset(Loader loader) {
         sca.swapCursor(null);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.app_menu, menu);
+        // We need to associate the searchable configuration with the SearchView (attached to the search menu item)
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        // Change the color of the search text
+        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        TextView textView = (TextView) searchView.findViewById(id);
+        textView.setTextColor(Color.WHITE);
+        return super.onCreateOptionsMenu(menu);
     }
 }
