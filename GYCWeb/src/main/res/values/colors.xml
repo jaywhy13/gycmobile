@@ -7,4 +7,7 @@
     <color name="listen_now_bg_stop">#FFD60000</color>
     <color name="bg_color">#FFE0E0E0</color>
     <color name="action_bar_bg_color">#FF151717</color>
+    <color name="download_bg">#FF757074</color>
+    <color name="download_fg">#FFedf3f3</color>
+    <color name="downloading_bg">#FFafafaf</color>
 </resources>
