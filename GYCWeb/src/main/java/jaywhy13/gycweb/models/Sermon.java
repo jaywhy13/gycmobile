@@ -6,8 +6,14 @@ import android.content.CursorLoader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
+
+import org.htmlcleaner.Utils;
 
 import java.util.ArrayList;
+
+import jaywhy13.gycweb.GYCMainActivity;
+import jaywhy13.gycweb.media.SermonDownloader;
 
 /**
  * Created by jay on 9/12/13.
@@ -31,6 +37,7 @@ public class Sermon extends Model {
     public static final String SERMON_PRESENTER_NAME = "presenter_name";
     public static final String SERMON_SITE_URL = "site_url";
     public static final String SERMON_AUDIO_URL = "audio_url";
+    public static final String SERMON_FILE_URL = "file_url";
 
     public Sermon(){
     }
@@ -136,6 +143,7 @@ public class Sermon extends Model {
                 SERMON_DURATION,
                 SERMON_AUDIO_URL,
                 SERMON_SITE_URL,
+                SERMON_FILE_URL,
                 SERMON_PRESENTER_NAME,
                 SERMON_PRESENTER_ID,
                 SERMON_EVENT_ID,
@@ -184,7 +192,46 @@ public class Sermon extends Model {
     public String getDefaultSortOrder() {
         return SERMON_TITLE;
     }
-    
+
+    public void setSermonFileUrl(String fileUrl){
+        setString(SERMON_FILE_URL, fileUrl);
+    }
+
+    /**
+     * Returns true if the sermon if the file path is set or if the
+     * sermon was downloaded using the SermonDownloader.
+     * @return
+     */
+    public boolean isDownloaded(){
+        return getString(SERMON_FILE_URL, null) != null || SermonDownloader.isSermonDownloaded(this);
+    }
+
+    public boolean isDownloading(){
+        return SermonDownloader.isSermonDownloading(this);
+    }
+
+    /**
+     * Blocking method, checks to ensure that we have the most up to date URI
+     * @return
+     */
+    public String getBestUrl(ContentResolver contentResolver){
+        Cursor cursor = getById(contentResolver, getId());
+        cursor.moveToFirst();
+        int numRows = cursor.getCount();
+        Log.d(GYCMainActivity.TAG, numRows + " rows returned");
+        String filePath = cursor.getString(cursor.getColumnIndex(SERMON_FILE_URL));
+        String httpUrl = cursor.getString(cursor.getColumnIndex(SERMON_AUDIO_URL));
+        if(filePath == null || filePath.isEmpty()){
+            Log.d(GYCMainActivity.TAG, "Returning url: " + httpUrl);
+            return httpUrl;
+        } else {
+            Log.d(GYCMainActivity.TAG, "Returning file path: " + filePath);
+            return filePath;
+        }
+    }
+
+
+
     
     public String getVerboseDuration(){
         String duration = getDuration();
