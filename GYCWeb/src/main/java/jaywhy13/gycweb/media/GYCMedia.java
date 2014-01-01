@@ -1,8 +1,5 @@
 package jaywhy13.gycweb.media;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,7 +7,6 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.rtp.AudioStream;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -18,15 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import jaywhy13.gycweb.GYCMainActivity;
 import jaywhy13.gycweb.R;
-import jaywhy13.gycweb.fragments.MusicSideBarFragment;
 import jaywhy13.gycweb.models.Sermon;
 
 /**
@@ -38,6 +31,7 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
 
     public static final String ACTION_LOAD = GYCMainActivity.TAG + ".LOAD";
     public static final String ACTION_PLAY = GYCMainActivity.TAG + ".PLAY";
+
     public static final String ACTION_PAUSE = GYCMainActivity.TAG + ".PAUSE";
     public static final String ACTION_STOP = GYCMainActivity.TAG + ".STOP";
     public static final String ACTION_NEXT = GYCMainActivity.TAG + ".NEXT";
@@ -46,6 +40,14 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
     public static final String INTENT_SERMON_TITLE = "sermon_title";
     public static final String INTENT_SERMON_ID = "sermon_id";
     public static final String INTENT_SERMON_PRESENTER = "presenter";
+
+
+    public static final String STATE_LOADING = "loading";
+    public static final String STATE_PLAYING = "playing";
+    public static final String STATE_PAUSED = "paused";
+    public static final String STATE_STOPPED = "stopped";
+
+    private String playerState = STATE_STOPPED;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -56,6 +58,14 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
     public void onCreate() {
         super.onCreate();
         init();
+    }
+
+    public void setPlayerState(String playerState) {
+        this.playerState = playerState;
+    }
+
+    public String getPlayerState() {
+        return playerState;
     }
 
     Sermon currentSermon;
@@ -80,52 +90,50 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
      * @param activity
      * @param rootView
      */
-    public static void addMusicSidebar(final GYCMediaPlayer mediaPlayer, Activity activity, ViewGroup rootView){
-        if(mediaPlayer.isPlaying()){
-            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View sideBar = inflater.inflate(R.layout.fragment_music_sidebar, null);
-            if(sideBar != null){
-                rootView.addView(sideBar);
+    public static void addMusicSidebar(final GYCMediaPlayer mediaPlayer, Context activity, ViewGroup rootView){
 
-                // Setup the buttons properly plz...
-                ImageView playPauseBtn = (ImageView) sideBar.findViewById(R.id.play_pause_btn);
-                ImageView stopBtn = (ImageView) sideBar.findViewById(R.id.stop_btn);
-                ImageView nextBtn = (ImageView) sideBar.findViewById(R.id.next_btn);
-                ImageView prevBtn = (ImageView) sideBar.findViewById(R.id.prev_btn);
+                LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View sideBar = inflater.inflate(R.layout.fragment_music_sidebar, null);
+                if(sideBar != null){
+                    rootView.addView(sideBar);
 
-                playPauseBtn.setImageBitmap(BitmapFactory.decodeResource(activity.getResources(), R.drawable.pause_icon));
+                    // Setup the buttons properly plz...
+                    ImageView playPauseBtn = (ImageView) sideBar.findViewById(R.id.play_pause_btn);
+                    ImageView stopBtn = (ImageView) sideBar.findViewById(R.id.stop_btn);
+                    ImageView nextBtn = (ImageView) sideBar.findViewById(R.id.next_btn);
+                    ImageView prevBtn = (ImageView) sideBar.findViewById(R.id.prev_btn);
 
-                View.OnClickListener listener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int id = view.getId();
-                        switch(id){
-                            case R.id.play_pause_btn:
-                                if(mediaPlayer.isPaused()){
-                                    mediaPlayer.resume();
-                                } else {
-                                    mediaPlayer.pause();
-                                }
-                                break;
-                            case R.id.stop_btn:
-                                mediaPlayer.stop();
-                                break;
-                            case R.id.next_btn:
-                                break;
-                            case R.id.prev_btn:
-                                break;
+                    playPauseBtn.setImageBitmap(BitmapFactory.decodeResource(activity.getResources(), R.drawable.pause_icon));
+
+                    View.OnClickListener listener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int id = view.getId();
+                            switch(id){
+                                case R.id.play_pause_btn:
+                                    if(mediaPlayer.isPaused()){
+                                        mediaPlayer.resume();
+                                    } else {
+                                        mediaPlayer.pause();
+                                    }
+                                    break;
+                                case R.id.stop_btn:
+                                    mediaPlayer.stop();
+                                    break;
+                                case R.id.next_btn:
+                                    break;
+                                case R.id.prev_btn:
+                                    break;
+                            }
                         }
-                    }
-                };
+                    };
 
-                playPauseBtn.setOnClickListener(listener);
-                stopBtn.setOnClickListener(listener);
-                nextBtn.setOnClickListener(listener);
-                prevBtn.setOnClickListener(listener);
-            }
-        } else {
-            Log.d(GYCMainActivity.TAG, "The player is not playing.. no need to add sidebar");
-        }
+                    playPauseBtn.setOnClickListener(listener);
+                    stopBtn.setOnClickListener(listener);
+                    nextBtn.setOnClickListener(listener);
+                    prevBtn.setOnClickListener(listener);
+                }
+
     }
 
     /**
@@ -157,7 +165,8 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
      * @return
      */
     public boolean isPlaying(){
-        return mediaPlayer.isPlaying();
+        return getPlayerState().equals(STATE_PLAYING);
+        //return mediaPlayer.isPlaying();
     }
 
     /**
@@ -166,6 +175,7 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
     public void stopPlayback(){
         if(isPlaying()){
             mediaPlayer.stop();
+            setPlayerState(STATE_STOPPED);
             broadcastAction(ACTION_STOP);
             currentSermon = null;
         }
@@ -175,7 +185,8 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
      * Pauses the playback
      */
     public void pausePlayback(){
-        mediaPlayer.stop();
+        mediaPlayer.pause();
+        setPlayerState(STATE_PAUSED);
         broadcastAction(ACTION_PAUSE);
     }
 
@@ -200,29 +211,33 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
      */
     public void resumePlayback(){
         mediaPlayer.start();
+        setPlayerState(STATE_PLAYING);
         broadcastAction(ACTION_PLAY);
     }
 
     public boolean isPlaybackPaused(){
-        return !mediaPlayer.isPlaying() && currentSermon != null;
+        return getPlayerState().equals(STATE_PAUSED);
+        //return !mediaPlayer.isPlaying() && currentSermon != null;
     }
 
     /**
      * Plays a sermon
      * @param sermon
      */
-    public void playSermon(final Sermon sermon){
+    public void playSermon(Context context, final Sermon sermon){
 
-        String audioUrl = sermon.getAudioUrl();
+        String audioUrl = sermon.getBestUrl(context.getContentResolver());
         if(audioUrl != null){
             try {
                 if(currentSermon != null || getMediaPlayer().isPlaying()){
                     getMediaPlayer().stop();
                 }
 
+                getMediaPlayer().reset(); // TODO: Should we do this??!??!?!
                 getMediaPlayer().setDataSource(audioUrl);
                 getMediaPlayer().prepareAsync();
                 setCurrentSermon(sermon);
+                setPlayerState(STATE_LOADING);
                 broadcastAction(ACTION_LOAD);
 
             } catch (IOException e) {
@@ -237,6 +252,7 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
     public void onPrepared(MediaPlayer mediaPlayer) {
         // Start when ready...
         mediaPlayer.start();
+        setPlayerState(STATE_PLAYING);
         broadcastAction(ACTION_PLAY);
     }
 
@@ -256,8 +272,8 @@ public class GYCMedia extends Service implements MediaPlayer.OnPreparedListener 
 
     public class GYCMediaPlayer extends Binder {
 
-        public void play(Sermon sermon){
-            playSermon(sermon);
+        public void play(Context context, Sermon sermon){
+            playSermon(context, sermon);
         }
 
         public void pause(){
