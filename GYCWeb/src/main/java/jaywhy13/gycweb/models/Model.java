@@ -26,9 +26,8 @@ import jaywhy13.gycweb.providers.GYCProvider;
 public abstract class Model {
 
     public static final String AUTHORITY = "jaywhy13.gycweb.providers.GYCProvider";
-
-    public static final String DATABASE_NAME = "cia-v2.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 4;
+    public static final String DATABASE_NAME = "cia-v" + DATABASE_VERSION + ".db";
 
     public static final String CREATED_FIELD_NAME = "created";
     public static final String MODIFIED_FIELD_NAME = "modified";
@@ -90,6 +89,16 @@ public abstract class Model {
     public Cursor get(ContentResolver contentResolver, String selection, String [] selectionArgs){
         Cursor cursor = contentResolver.query(getModelURI(), null, selection, selectionArgs, getDefaultSortOrder());
         return cursor;
+    }
+
+    /**
+     * Returns a cursor to one sermon by ID
+     * @param contentResolver
+     * @param id
+     * @return
+     */
+    public Cursor getById(ContentResolver contentResolver, int id){
+        return get(contentResolver, BaseColumns._ID + " = ?", new String[]{String.valueOf(id)});
     }
 
     public CursorLoader getViaCursorLoader(Context context, String selection, String [] selectionArgs){
