@@ -1,25 +1,18 @@
 package jaywhy13.gycweb;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import jaywhy13.gycweb.fragments.GYCListPageFragment;
-import jaywhy13.gycweb.providers.GYCProviderMetadata;
 import jaywhy13.gycweb.screens.GYCEventList;
 import jaywhy13.gycweb.screens.GYCMenuable;
 import jaywhy13.gycweb.screens.GYCPresenterList;
 import jaywhy13.gycweb.screens.GYCSermonList;
-import jaywhy13.gycweb.screens.GYCThemeList;
-import jaywhy13.gycweb.tasks.SyncTask;
+import jaywhy13.gycweb.screens.TestScreen;
 
 public class GYCMainActivity extends Activity implements GYCMenuable {
 
@@ -80,6 +73,7 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
         return new int[]{R.drawable.message_white,
                 R.drawable.presenter_white,
                 R.drawable.cloud_icon,
+                R.drawable.cloud_icon,
                 R.drawable.cloud_icon};
     }
 
@@ -95,21 +89,23 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
         } else if (position == 2) {
             Log.d(TAG, "Opening events");
             activityClass = GYCEventList.class;
-        } else if (position == 3) {
-            Log.d(TAG, "Opening blogs");
+        } else if(position == 3){
+            Log.d(TAG, "Opening test screen");
+            activityClass = TestScreen.class;
         }
 
         if (activityClass != null) {
             Intent intent = new Intent(this, activityClass);
             Log.d(TAG, "Starting activity: " + activityClass);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.fade_out);
         }
     }
 
     @Override
     public int[] getMenuBackgroundColors() {
         return new int[] {
-               0xFF00a2a5, 0xFF9400a1, 0xFFff5700
+               0xFF00a2a5, 0xFF9400a1, 0xFFff5700, 0xFFff5700
         };
     }
 
@@ -120,8 +116,12 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
     public void testProvider(View view){
     }
 
-
-
-
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK & event.getRepeatCount() == 0){
+            this.moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }
