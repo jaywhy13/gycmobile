@@ -13,76 +13,59 @@
         android:layout_height="match_parent"
         android:id="@+id/sidebar"/>
 
-    <!-- the banner background for the entire page -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/mainPageView"
-        android:baselineAligned="false"
-        >
-
-        <ImageView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/presenter_bg_blurred_trans"
-            android:scaleType="fitStart"
-            android:alpha="0.4"
-            />
-
-
-        <!-- a container for the title of the page and sub title -->
-        <jaywhy13.gycweb.components.FontifiedTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="38sp"
-            android:text="@string/presenter_list_page_title"
-            android:paddingTop="35dp"
-            android:paddingLeft="20dp"
-            android:id="@+id/pageTitle"
-            android:fontFamily="@string/default_font_bold"
-            android:textStyle="bold"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            />
-
-        <jaywhy13.gycweb.components.FontifiedTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/pageTitle"
-            android:paddingLeft="20dp"
-            android:id="@+id/pageSubTitle"
-            android:paddingRight="50dp"
-            android:textColor="#FF003937"
-            android:textSize="12sp"
-            />
-
-
-
-        <ImageView android:src="@drawable/presenter_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:scaleType="center" />
-
-
-        <LinearLayout
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/pageSubTitle"
+            android:id="@+id/mainPageView"
+            android:baselineAligned="false"
             >
 
-            <fragment
-                android:layout_height="match_parent"
+            <ImageView
                 android:layout_width="match_parent"
-                class="jaywhy13.gycweb.fragments.GYCListPageFragment"
-                android:id="@+id/mainPageFragment"
-                tools:layout="@layout/fragment_list_page">
-            </fragment>
+                android:layout_height="wrap_content"
+                android:src="@drawable/presenter_bg_blurred_trans"
+                android:scaleType="fitStart"
+                android:alpha="0.4"
+                />
 
-        </LinearLayout>
-    </RelativeLayout>
+            <!-- a container for the title of the page and sub title -->
+            <jaywhy13.gycweb.components.FontifiedTextView
+                android:id="@+id/pageTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="38sp"
+                android:text="@string/presenter_list_page_title"
+                android:paddingTop="35dp"
+                android:paddingLeft="20dp"
+                android:fontFamily="@string/default_font_bold"
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                />
+
+            <jaywhy13.gycweb.components.FontifiedTextView
+                android:id="@+id/pageSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/pageTitle"
+                android:paddingLeft="20dp"
+                android:paddingRight="50dp"
+                android:textColor="#FF003937"
+                style="@android:style/TextAppearance.Medium"
+                />
+
+            <!-- page list view -->
+            <ListView
+                android:id="@+id/pageList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:divider="@null"
+                android:layout_below="@id/pageSubTitle"
+                android:listSelector="@android:color/transparent"
+                />
+
+        </RelativeLayout>
+
 </merge>
