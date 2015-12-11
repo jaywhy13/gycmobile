@@ -7,15 +7,20 @@ import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import jaywhy13.gycweb.GYCMainActivity;
 import jaywhy13.gycweb.R;
 import jaywhy13.gycweb.media.GYCMedia;
+import jaywhy13.gycweb.media.SermonDownloader;
 import jaywhy13.gycweb.models.Model;
 import jaywhy13.gycweb.models.Sermon;
+import jaywhy13.gycweb.tasks.SermonDownloadTask;
+import jaywhy13.gycweb.util.Utils;
 
 /**
  * Created by jay on 9/9/13.
@@ -24,6 +29,7 @@ public class GYCSermonDetail extends GYCPresenterDetail implements TextView.OnCl
 
     Sermon sermon = new Sermon();
     TextView listenNow;
+    TextView downloadNow;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
