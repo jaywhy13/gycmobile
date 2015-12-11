@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/listTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Heading"
+        android:layout_gravity="center_horizontal|left|top"
+        android:layout_below="@id/pageSubTitle"/>
+
+    <TextView
+        android:id="@+id/listSubTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:layout_gravity="left|top"
+        android:layout_below="@id/listTitle"/>
+
+    <TextView
+        android:id="@+id/pageSummary"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:layout_gravity="center_vertical|left|top"
+        android:layout_below="@id/listSubTitle"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:id="@+id/actionAreaView"
+        android:layout_below="@id/pageSummary"
+        >
+    </LinearLayout>
+
+
+</merge>
+
