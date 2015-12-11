@@ -17,11 +17,15 @@ import android.os.Bundle;
 
 import android.os.IBinder;
 import android.provider.BaseColumns;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,11 +43,16 @@ import jaywhy13.gycweb.models.Sermon;
  */
 public class GYCPresenterDetail extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private MediaReceiver mediaReceiver;
+    protected MediaReceiver mediaReceiver;
+
+    protected boolean receiverRegistered = false;
 
     private TextView pageTitle;
     private TextView pageSubTitle;
     private TextView pageDescription;
+    private TextView listCaption;
+    protected ListView pageListView;
+    protected LinearLayout actionArea;
 
 
 
@@ -53,31 +62,59 @@ public class GYCPresenterDetail extends Activity implements LoaderManager.Loader
         // Grab the information from the intent and update the model
         updateModel();
 
-        detailPageFragment = (GYCDetailPageFragment) getFragmentManager().findFragmentById(R.id.detailPageFragment);
-        detailPageFragment.hideHeadings();
-
         pageTitle = (TextView) findViewById(R.id.pageTitle);
         pageSubTitle = (TextView) findViewById(R.id.pageSubTitle);
         pageDescription = (TextView) findViewById(R.id.pageDescription);
+        pageListView = (ListView) findViewById(R.id.pageList);
 
         sidebar = (LinearLayout) findViewById(R.id.sidebar);
 
+        listCaption = (TextView) findViewById(R.id.listCaption);
+        actionArea = (LinearLayout) findViewById(R.id.actionAreaView);
 
         setupPageTitles();
         setupPageList();
         setupActionArea();
 
-        mediaReceiver = new MediaReceiver(){
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                onMediaPlayerIntent(intent);
-            }
-        };
-
         getLoaderManager().initLoader(1, null, this);
 
+        connectToMediaService();
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        overridePendingTransition(R.anim.activity_open_slide, R.anim.activity_close_shrink);
     }
 
+    /**
+     * Adds a control to the action area on the page
+     *
+     * @param view
+     */
+    public void addAction(View view) {
+        if (actionArea != null) {
+            actionArea.addView(view);
+        }
+    }
+
+
+
+
+    public TextView getListCaption() {
+        return listCaption;
+    }
+
+
+
+    public ListView getPageListView() {
+        return pageListView;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // closing transitions
+        overridePendingTransition(R.anim.activity_open_grow, R.anim.activity_close_slide);
+    }
 
     /**
      * Sets the title, sub title and hides the page description text view
@@ -89,39 +126,37 @@ public class GYCPresenterDetail extends Activity implements LoaderManager.Loader
         pageTitle.setText(presenter.getName());
         pageSubTitle.setText(subTitle);
         pageDescription.setVisibility(View.GONE);
-        detailPageFragment.getListCaption().setVisibility(View.GONE);
-    }
+        }
 
 
     @Override
-    protected void onResume() {
+    protected void onResume(){
         super.onResume();
-        // Add a broadcast listener..
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(GYCMedia.ACTION_LOAD);
-        intentFilter.addAction(GYCMedia.ACTION_PLAY);
-        intentFilter.addAction(GYCMedia.ACTION_PAUSE);
-        intentFilter.addAction(GYCMedia.ACTION_STOP);
-        registerReceiver(mediaReceiver, intentFilter);
+        if(mediaReceiver != null && !receiverRegistered){
+            registerReceiver(mediaReceiver, mediaReceiver.getIntentFilter());
+            receiverRegistered = true;
+        }
+
+        if(mediaReceiver != null){
+            mediaReceiver.refresh();
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(mediaReceiver);
+        if(mediaReceiver != null && receiverRegistered){
+            unregisterReceiver(mediaReceiver);
+            receiverRegistered = false;
+        }
     }
 
-    private LinearLayout sidebar;
-
-    /**
-     * The fragment that contains the entire page basically...
-     */
-    private GYCDetailPageFragment detailPageFragment;
+    protected LinearLayout sidebar;
 
     Presenter presenter = new Presenter();
     protected SimpleCursorAdapter sca;
 
-    private GYCMedia.GYCMediaPlayer mediaPlayer;
+    protected GYCMedia.GYCMediaPlayer mediaPlayer;
     private boolean serviceBound = false;
 
     ServiceConnection serviceConnection = new ServiceConnection() {
@@ -129,11 +164,12 @@ public class GYCPresenterDetail extends Activity implements LoaderManager.Loader
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             mediaPlayer = (GYCMedia.GYCMediaPlayer) iBinder;
             serviceBound = true;
-
-            Log.d(GYCMainActivity.TAG, "Service connected... adding music sidebar...");
-
-            // Check if we need to add the fragment
-            GYCMedia.addMusicSidebar(mediaPlayer, GYCPresenterDetail.this, sidebar);
+            mediaReceiver = createMediaPlayer();
+            if(!receiverRegistered){
+                Log.d(GYCMainActivity.TAG, "Receiver registered");
+                registerReceiver(mediaReceiver, mediaReceiver.getIntentFilter());
+                receiverRegistered = true;
+            }
         }
 
         @Override
@@ -142,6 +178,10 @@ public class GYCPresenterDetail extends Activity implements LoaderManager.Loader
             serviceBound = false;
         }
     };
+
+    public MediaReceiver createMediaPlayer(){
+        return new MediaReceiver(this, sidebar, mediaPlayer);
+    }
 
     /**
      * This method is called to establish a connection to the GYCMedia service
@@ -170,7 +210,16 @@ public class GYCPresenterDetail extends Activity implements LoaderManager.Loader
     protected CursorAdapter getCursorAdapter(){
         if(sca == null){
             sca = new SimpleCursorAdapter(this, R.layout.menu_item, null, new String[]{Sermon.SERMON_TITLE, Sermon.SERMON_PRESENTER_NAME},
-                    new int [] {R.id.menu_caption, R.id.menu_sub_caption}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+                    new int [] {R.id.menu_caption, R.id.menu_sub_caption}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER){
+
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View menuParent = super.getView(position, convertView, parent);
+                    final ViewGroup menuItem = (ViewGroup) menuParent.findViewById(R.id.menu_item_container);
+                    //menuItem.setBackgroundResource(R.drawable.menu_item_bg);
+                    return menuParent;
+                }
+            };
         }
         return sca;
     }
@@ -197,8 +246,8 @@ public class GYCPresenterDetail extends Activity implements LoaderManager.Loader
      */
     protected void setupPageList(){
         CursorAdapter adapter = getCursorAdapter();
-        detailPageFragment.getPageListView().setAdapter(adapter);
-        detailPageFragment.getPageListView().setOnItemClickListener(
+        getPageListView().setAdapter(adapter);
+        getPageListView().setOnItemClickListener(
                 new AdapterView.OnItemClickListener(){
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -246,16 +295,13 @@ public class GYCPresenterDetail extends Activity implements LoaderManager.Loader
         intent.putExtra("table_name", model.getTableName());
         intent.putExtra("model", model.getValues());
         startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.fade_out);
     }
 
-
-
-    /**
-     * Returns a link to the detailPageFragment that contains the title, sub title, action area and list view
-     * @return
-     */
-    public GYCDetailPageFragment getDetailPageFragment() {
-        return detailPageFragment;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
     }
 
     /**
@@ -322,38 +368,65 @@ public class GYCPresenterDetail extends Activity implements LoaderManager.Loader
 
     public static class MediaReceiver extends BroadcastReceiver {
 
+        public Context context;
+        public ViewGroup sidebarContainer;
+        public GYCMedia.GYCMediaPlayer mediaPlayer;
+        IntentFilter intentFilter = new IntentFilter();
+
+
+        public MediaReceiver(Context context, ViewGroup sidebarContainer, GYCMedia.GYCMediaPlayer mediaPlayer){
+            super();
+            this.context = context;
+            this.sidebarContainer = sidebarContainer;
+            this.mediaPlayer = mediaPlayer;
+
+            // Add the music sidebar
+            sidebarContainer.setVisibility(View.GONE);
+            GYCMedia.addMusicSidebar(mediaPlayer, context, sidebarContainer);
+            refresh();
+
+            // Add the intent filters...
+            intentFilter.addAction(GYCMedia.ACTION_LOAD);
+            intentFilter.addAction(GYCMedia.ACTION_PLAY);
+            intentFilter.addAction(GYCMedia.ACTION_PAUSE);
+            intentFilter.addAction(GYCMedia.ACTION_STOP);
+
+        }
+
+        public void hideSidebar(){
+            Log.d(GYCMainActivity.TAG, "Hiding the sidebar");
+            sidebarContainer.setVisibility(View.GONE);
+        }
+
+        public void showSidebar(){
+            Log.d(GYCMainActivity.TAG, "Showing the sidebar");
+            sidebarContainer.setVisibility(View.VISIBLE);
+        }
+
+        /**
+         * Checks the media player status to see if the side bar should be showing or not
+         */
+        public void refresh(){
+            if(mediaPlayer.isPlaying() || mediaPlayer.isPaused()){
+                showSidebar();
+            } else {
+                hideSidebar();
+            }
+            Sermon sermon = mediaPlayer.getSermon();
+            if(sermon != null){
+
+            }
+        }
+
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            Log.d(GYCMainActivity.TAG, "Received media player action: " + intent.getAction());
+            refresh();
         }
-    }
 
-    protected void onMediaPlayerIntent(Intent intent){
-        Bundle extras = intent.getExtras();
-        if(intent.getAction().equals(GYCMedia.ACTION_LOAD)){
-            trackLoading(extras);
-        } else if(intent.getAction().equals(GYCMedia.ACTION_PLAY)){
-            trackPlayed(extras);
-        } else if(intent.getAction().equals(GYCMedia.ACTION_PAUSE)){
-            trackPaused(extras);
-        } else if(intent.getAction().equals(GYCMedia.ACTION_STOP)){
-            trackStopped(extras);
+        public IntentFilter getIntentFilter(){
+            return intentFilter;
         }
-    }
-
-    protected void trackLoading(Bundle extras){
-
-    }
-
-    protected void trackPlayed(Bundle extras){
-
-    }
-
-    protected void trackPaused(Bundle extras){
-
-    }
-
-    protected void trackStopped(Bundle extras){
 
     }
 
