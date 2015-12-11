@@ -30,6 +30,49 @@ public class GYCSermonDetail extends GYCPresenterDetail implements TextView.OnCl
         connectToMediaService();
 
         listenNow = (TextView) findViewById(R.id.listen_now_btn);
+        downloadNow = (TextView) findViewById(R.id.download_btn);
+        downloadNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!sermon.isDownloaded() && !sermon.isDownloading()){
+                    SermonDownloader.downloadSermon(GYCSermonDetail.this, sermon);
+                    downloadNow.setBackgroundColor(getResources().getColor(R.color.downloading_bg));
+                    downloadNow.setText(getResources().getString(R.string.downloading_txt));
+                    downloadNow.setEnabled(false);
+                }
+            }
+        });
+    }
+
+    /**
+     * Updates the download button
+     */
+    public void updateDownloadButton(){
+
+        // check if it's downloaded
+        boolean downloaded = sermon.isDownloaded();
+        boolean downloading = sermon.isDownloading();
+        Log.d(GYCMainActivity.TAG, "Updating download button - downloaded: " + downloaded + ", downloading: " + downloading);
+        if(!downloaded){
+            if(downloading){
+                downloadNow.setBackgroundColor(getResources().getColor(R.color.downloading_bg));
+                downloadNow.setText(getResources().getString(R.string.downloading_txt));
+                downloadNow.setEnabled(false);
+
+            } else {
+                // show the download option
+                downloadNow.setBackgroundColor(getResources().getColor(R.color.download_bg));
+                downloadNow.setText(getResources().getString(R.string.download_txt));
+                downloadNow.setEnabled(true);
+            }
+        } else {
+            // show the downloaded style
+            downloadNow.setBackgroundColor(getResources().getColor(R.color.downloading_bg));
+            downloadNow.setText(getResources().getString(R.string.downloaded_txt));
+            downloadNow.setAlpha(0.7f);
+            downloadNow.setEnabled(false);
+        }
+
     }
 
     @Override
