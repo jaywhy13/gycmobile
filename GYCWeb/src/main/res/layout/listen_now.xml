@@ -24,4 +24,22 @@
         android:layout_marginLeft="10dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/listen_now_btn" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/download_txt"
+        android:background="@color/download_bg"
+        android:textSize="16sp"
+        android:textIsSelectable="false"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textAllCaps="true"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:textColor="@color/download_fg"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/download_btn" />
+
 </LinearLayout>
