@@ -155,17 +155,16 @@ public class GYCSermonDetail extends GYCPresenterDetail implements TextView.OnCl
         }
     }
 
-    @Override
-    protected void trackPlayed(Bundle extras) {
-        super.trackPlayed(extras);
-        updateListenButton();
+    public MediaReceiver createMediaPlayer(){
+        return new MediaReceiver(this, sidebar, mediaPlayer){
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                super.onReceive(context, intent);
+                updateListenButton();
+            }
+        };
     }
 
-    @Override
-    protected void trackStopped(Bundle extras) {
-        super.trackStopped(extras);
-        updateListenButton();
-    }
 
     @Override
     public void onClick(View view) {
