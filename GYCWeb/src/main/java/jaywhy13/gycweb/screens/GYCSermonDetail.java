@@ -123,7 +123,7 @@ public class GYCSermonDetail extends GYCPresenterDetail implements TextView.OnCl
     public void setupActionArea() {
         // Setup the listen now button
         View view = getLayoutInflater().inflate(R.layout.listen_now, null);
-        getDetailPageFragment().addAction(view);
+        addAction(view);
 
         TextView listenNowLink = (TextView) view.findViewById(R.id.listen_now_btn);
         listenNowLink.setOnClickListener(this);
