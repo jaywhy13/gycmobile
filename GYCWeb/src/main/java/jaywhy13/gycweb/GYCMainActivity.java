@@ -6,7 +6,10 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import jaywhy13.gycweb.adapters.MainMenuAdapter;
 import jaywhy13.gycweb.fragments.GYCListPageFragment;
 import jaywhy13.gycweb.screens.GYCEventList;
 import jaywhy13.gycweb.screens.GYCMenuable;
@@ -19,6 +22,7 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
     public static final String TAG = "jaywhy13.gycweb";
 
     protected GYCListPageFragment mainPageFragment;
+    protected ListView pageListView;
 
 
     /**
@@ -35,24 +39,32 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResource());
 
-        mainPageFragment = (GYCListPageFragment) getFragmentManager().findFragmentById(R.id.mainPageFragment);
-
-        // Set the title of the page...
-        mainPageFragment.hidePageTitle();
-        mainPageFragment.hidePageSubTitle();
-        mainPageFragment.hidePageSummary();
-
         Log.d(GYCMainActivity.TAG, "onCreate called, gonna setup page list");
         setupPageList();
-
+        overridePendingTransition(R.anim.activity_open_slide, R.anim.activity_close_shrink);
     }
+
 
     /**
      * Sets up the menu
      */
     protected void setupPageList() {
-        getMainPageFragment().setMenuItemResource(R.layout.main_menu_item);
-        getMainPageFragment().setupPageList();
+        pageListView = (ListView) findViewById(R.id.pageList);
+        final String menuHeadings[] = getMenuHeadings();
+        final int menuIcons[] = getMenuIcons();
+        final int backgroundColors [] = getMenuBackgroundColors();
+        final int [] backgroundMenuResources = getBackgroundResources();
+        MainMenuAdapter adapter = new MainMenuAdapter(this, R.layout.main_menu_item,
+                menuHeadings, menuIcons, backgroundColors, backgroundMenuResources);
+        pageListView.setAdapter(adapter);
+        ListView.OnItemClickListener listener = new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String menuCaption = menuHeadings[i];
+                menuItemClicked(i, menuCaption);
+            }
+        };
+        pageListView.setOnItemClickListener(listener);
     }
 
     /**
@@ -104,8 +116,13 @@ public class GYCMainActivity extends Activity implements GYCMenuable {
 
     @Override
     public int[] getMenuBackgroundColors() {
+        return null;
+    }
+
+    @Override
+    public int[] getBackgroundResources() {
         return new int[] {
-               0xFF00a2a5, 0xFF9400a1, 0xFFff5700, 0xFFff5700
+                R.drawable.sermon_item, R.drawable.presenter_item, R.drawable.theme_item
         };
     }
 
