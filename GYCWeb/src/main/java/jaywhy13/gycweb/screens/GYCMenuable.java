@@ -30,4 +30,10 @@ public interface GYCMenuable {
      */
     public int [] getMenuBackgroundColors();
 
+
+    /**
+     * Returns a list of background resources for the list items
+     * @return
+     */
+    public int [] getBackgroundResources();
 }
