@@ -88,7 +88,9 @@ public class GYCListPageFragment extends Fragment implements ListView.OnTouchLis
             final String menuHeadings[] = menuable.getMenuHeadings();
             final int menuIcons[] = menuable.getMenuIcons();
             final int backgroundColors [] = menuable.getMenuBackgroundColors();
-            MainMenuAdapter adapter = new MainMenuAdapter(getActivity(), getMenuItemResource(), menuHeadings, menuIcons, backgroundColors);
+            final int [] backgroundMenuResources = menuable.getBackgroundResources();
+            MainMenuAdapter adapter = new MainMenuAdapter(getActivity(), getMenuItemResource(),
+                    menuHeadings, menuIcons, backgroundColors, backgroundMenuResources);
             pageListView.setAdapter(adapter);
             ListView.OnItemClickListener listener = new ListView.OnItemClickListener() {
                 @Override
@@ -99,7 +101,6 @@ public class GYCListPageFragment extends Fragment implements ListView.OnTouchLis
                 }
             };
             pageListView.setOnItemClickListener(listener);
-            pageListView.setOnTouchListener(this);
         }
     }
 
