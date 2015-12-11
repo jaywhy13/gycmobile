@@ -70,15 +70,48 @@
                 android:paddingRight="50dp"
                 android:textColor="#FF437f7f"
                 android:textSize="22sp"
-                android:layout_below="@id/pageSubTitle"
-                android:text="1 hr 30 mins"
-                android:textIsSelectable="false" />
+            android:layout_below="@id/pageSubTitle"
+            android:text="1 hr 30 mins"
+            android:textIsSelectable="false" />
 
-            <fragment android:layout_height="match_parent" android:layout_width="match_parent" class="jaywhy13.gycweb.fragments.GYCDetailPageFragment"
-                android:id="@+id/detailPageFragment"
-                tools:layout="@layout/fragment_detail_page"
-                android:layout_below="@id/pageDescription"
-                android:layout_marginTop="20dp"
+            <!-- page list view -->
+                <jaywhy13.gycweb.components.FontifiedTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listCaption"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="20dp"
+                    android:textColor="#FF001d1c"
+                    android:textSize="18sp"
+                    android:layout_below="@id/pageSubTitle"
+                    android:text="Others sermons from Pastor Brown"
+                    android:layout_marginTop="25dp"
+                    android:textStyle="bold"
+                    android:textIsSelectable="false" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/pageSummary"
+                    android:layout_below="@id/listCaption"
+                    android:layout_gravity="center_vertical|left|top"/>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/pageSummary"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:id="@+id/actionAreaView">
+                </LinearLayout>
+
+            <ListView
+                android:id="@+id/pageList"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="left|center_vertical"
+                android:divider="@null"
+                android:layout_below="@id/pageSummary"
+                android:listSelector="@android:color/transparent"
                 />
 
             </RelativeLayout>
