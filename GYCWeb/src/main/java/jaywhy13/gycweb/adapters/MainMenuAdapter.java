@@ -3,8 +3,10 @@ package jaywhy13.gycweb.adapters;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,6 +38,8 @@ public class MainMenuAdapter extends ArrayAdapter<String> {
 
     private int [] backgroundColors = null;
 
+    private int [] backgroundResources = null;
+
     private final Context context;
 
     public MainMenuAdapter(Context context, int textViewResourceId, String [] values, int [] icons){
@@ -56,6 +60,17 @@ public class MainMenuAdapter extends ArrayAdapter<String> {
         this.menuResourceId = textViewResourceId;
     }
 
+    public MainMenuAdapter(Context context, int textViewResourceId, String [] values, int [] icons,
+                           int [] backgroundColors, int [] backgroundResources){
+        super(context, textViewResourceId, values);
+        this.menuTitles = values;
+        this.menuIcons = icons;
+        this.context = context;
+        this.backgroundColors = backgroundColors;
+        this.menuResourceId = textViewResourceId;
+        this.backgroundResources = backgroundResources;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView;
@@ -71,12 +86,16 @@ public class MainMenuAdapter extends ArrayAdapter<String> {
         int menuIconResource = this.menuIcons[position];
         String menuTitle = this.menuTitles[position];
 
-        ViewGroup menuItem = (ViewGroup) rowView.findViewById(R.id.menu_item_container);
+        final ViewGroup menuItem = (ViewGroup) rowView.findViewById(R.id.menu_item_container);
         if(backgroundColors != null){
-            int backgroundColor = backgroundColors.length > position ? backgroundColors[position] : 0xFFFF0000;
+            final int backgroundColor = backgroundColors.length > position ? backgroundColors[position] : 0xFFFF0000;
             menuItem.setBackgroundColor(backgroundColor);
+        } else if(this.backgroundResources != null){
+            if(this.backgroundResources.length > position){
+                int backgroundResource = this.backgroundResources[position];
+                menuItem.setBackgroundResource(backgroundResource);
+            }
         }
-
 
         ImageView icon = (ImageView) rowView.findViewById(R.id.menu_icon);
         TextView caption = (TextView) rowView.findViewById(R.id.menu_caption);
