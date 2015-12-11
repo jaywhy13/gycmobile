@@ -96,8 +96,19 @@ public class GYCSermonDetail extends GYCPresenterDetail implements TextView.OnCl
     @Override
     protected CursorAdapter getCursorAdapter() {
         if(sca == null){
-            sca = new SimpleCursorAdapter(this, R.layout.menu_item, null, new String[]{Sermon.SERMON_TITLE},
-                    new int [] {R.id.menu_caption}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+            sca = new SimpleCursorAdapter(this, R.layout.menu_item, null, new String[]{Sermon.SERMON_TITLE, Sermon.SERMON_DURATION},
+                    new int [] {R.id.menu_caption, R.id.menu_sub_caption_right}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+            sca.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+                @Override
+                public boolean setViewValue(View view, Cursor cursor, int i) {
+                    if(Sermon.SERMON_DURATION.equals(cursor.getColumnName(i))){
+                        String duration = Utils.getVerboseDuration(cursor.getString(i));
+                        ((TextView) view).setText(duration);
+                        return true;
+                    }
+                    return false;
+                }
+            });
         }
         return sca;
     }
