@@ -6,10 +6,19 @@
 local.properties
 
 */build/
+build/
 build.gradle
+*.gradle
+*.iml
 gradle-*.*
 gradlew*
 *.gradle
 *~
 *.swp
 ~$*
+*.psd
+*.db
+*.iml
+*.gradle
+design/
+schedules/
