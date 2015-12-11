@@ -38,14 +38,17 @@
                android:layout_alignParentRight="true"
                android:padding="10dp"
                />
+
+
        </jaywhy13.gycweb.components.BannerLayout>
 
-        <fragment
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                class="jaywhy13.gycweb.fragments.GYCListPageFragment"
-                android:id="@+id/mainPageFragment"
-                tools:layout="@layout/fragment_list_page">
-        </fragment>
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/pageList"
+        android:layout_gravity="left|center_vertical"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent"
+        />
 
 </LinearLayout>
