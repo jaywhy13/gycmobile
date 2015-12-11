@@ -230,20 +230,8 @@ public class Sermon extends Model {
         }
     }
 
-
-
-    
     public String getVerboseDuration(){
         String duration = getDuration();
-        String pieces [] = duration.split(":");
-        if(pieces.length == 2){ // e.g. 10:12
-            // only say how many mins it was ...
-            return Integer.parseInt(pieces[0]) + " mins";
-        } else if(pieces.length == 3){
-            int hours = Integer.parseInt(pieces[0]);
-            int mins = Integer.parseInt(pieces[1]);
-            return (hours > 0 ? hours + " hr " : "") + mins + " mins";
-        }
-        return "";
+        return jaywhy13.gycweb.util.Utils.getVerboseDuration(duration);
     }
 }
