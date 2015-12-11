@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
@@ -36,25 +37,31 @@ public class GYCPresenterList extends Activity implements LoaderManager.LoaderCa
 
     protected TextView pageTitle;
     protected TextView pageSubTitle;
-    protected GYCListPageFragment listFragment;
+    protected ListView pageListView;
     protected SimpleCursorAdapter sca = null;
 
     public void onCreate(Bundle savedInstanceState) {
-        long now = System.currentTimeMillis();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
         getLoaderManager().initLoader(0, null, this);
+        overridePendingTransition(R.anim.activity_open_slide, R.anim.activity_close_shrink);
 
         pageTitle = (TextView) findViewById(R.id.pageTitle);
         pageSubTitle = (TextView) findViewById(R.id.pageSubTitle);
-        listFragment = (GYCListPageFragment) getFragmentManager().findFragmentById(R.id.mainPageFragment);
+        pageListView = (ListView) findViewById(R.id.pageList);
+        pageListView.setScrollContainer(false);
 
         setupPage();
         setupPageList();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // closing transitions
+        overridePendingTransition(R.anim.activity_open_grow, R.anim.activity_close_slide);
+    }
 
     /**
      * Sets up the page, hides different controls and so on...
@@ -63,7 +70,6 @@ public class GYCPresenterList extends Activity implements LoaderManager.LoaderCa
         // Setup our page
         pageTitle.setText(getPageTitle());
         pageSubTitle.setText(Verses.getVerse());
-        listFragment.hideHeadings();
     }
 
 
@@ -74,7 +80,8 @@ public class GYCPresenterList extends Activity implements LoaderManager.LoaderCa
     protected CursorAdapter getCursorAdapter(){
         if(sca == null){
             sca = new SimpleCursorAdapter(this, R.layout.menu_item, null, new String[]{Presenter.PRESENTER_NAME, Presenter.PRESENTER_NUM_SERMONS},
-                    new int [] {R.id.menu_caption, R.id.menu_sub_caption}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+                    new int [] {R.id.menu_caption, R.id.menu_sub_caption}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER){
+            };
             sca.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
                 @Override
                 public boolean setViewValue(View view, Cursor cursor, int i) {
@@ -107,8 +114,8 @@ public class GYCPresenterList extends Activity implements LoaderManager.LoaderCa
      */
     protected void setupPageList(){
         CursorAdapter adapter = getCursorAdapter();
-        listFragment.getPageListView().setAdapter(adapter);
-        listFragment.getPageListView().setOnItemClickListener(
+        getPageListView().setAdapter(adapter);
+        getPageListView().setOnItemClickListener(
                 new AdapterView.OnItemClickListener(){
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -116,6 +123,10 @@ public class GYCPresenterList extends Activity implements LoaderManager.LoaderCa
                     }
                 }
         );
+    }
+
+    public ListView getPageListView() {
+        return pageListView;
     }
 
     /**
@@ -145,15 +156,8 @@ public class GYCPresenterList extends Activity implements LoaderManager.LoaderCa
         intent.putExtra("table_name", model.getTableName());
         intent.putExtra("model", model.getValues());
         startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_left, R.anim.fade_out);
     }
 
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.fade_in, R.anim.slide_out_right);
-    }
 
     /**
      * This method grabs the cursor, creates a model from it and calls modelClicked
@@ -186,6 +190,13 @@ public class GYCPresenterList extends Activity implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         sca.swapCursor(cursor);
+        if(cursor != null){
+            int count = cursor.getCount();
+            Log.d(GYCMainActivity.TAG, "There are a total of " + count + " rows");
+        } else {
+            Log.d(GYCMainActivity.TAG, "Hmm... we got back a NULL cursor");
+        }
+        getPageListView().invalidateViews();
     }
 
     @Override
