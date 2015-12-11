@@ -84,7 +84,7 @@ public class GYCSermonDetail extends GYCPresenterDetail implements TextView.OnCl
         } else {
             getPageDescription().setVisibility(View.GONE);
         }
-        getDetailPageFragment().getListCaption().setText(getString(R.string.other_sermons_by) + " " + sermon.getPresenterName());
+        getListCaption().setText(getString(R.string.other_sermons_by) + " " + sermon.getPresenterName());
     }
 
 
