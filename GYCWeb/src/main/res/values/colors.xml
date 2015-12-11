@@ -10,4 +10,13 @@
     <color name="download_bg">#FF757074</color>
     <color name="download_fg">#FFedf3f3</color>
     <color name="downloading_bg">#FFafafaf</color>
+    <!-- menu colors -->
+    <color name="sermon_bg">#FF00a2a5</color>
+    <color name="sermon_bg_pressed">#FF006F72</color>
+    <color name="presenter_bg">#FF9400a1</color>
+    <color name="presenter_bg_pressed">#FF61006E</color>
+    <color name="theme_bg">#FFff5700</color>
+    <color name="theme_bg_pressed">#FFCC2400</color>
+    <color name="menu_item_bg">#FFFFFFFF</color>
+    <color name="menu_item_bg_pressed">#FFEBEB00</color>
 </resources>
