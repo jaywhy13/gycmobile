@@ -179,7 +179,7 @@ public class GYCSermonDetail extends GYCPresenterDetail implements TextView.OnCl
             if(isServiceBound()){
                 String text = textView.getText().toString();
                 if(text.equals(getResources().getString(R.string.listen_now))){
-                    getPlayer().play(sermon);
+                    getPlayer().play(GYCSermonDetail.this, sermon);
                     showLoading();
                 } else if(text.equals(getString(R.string.listen_now_stop))){
                     getPlayer().stop();
