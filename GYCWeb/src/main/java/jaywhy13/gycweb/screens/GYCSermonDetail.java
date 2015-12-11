@@ -189,5 +189,11 @@ public class GYCSermonDetail extends GYCPresenterDetail implements TextView.OnCl
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateListenButton();
+        updateDownloadButton();
+    }
 }
 
