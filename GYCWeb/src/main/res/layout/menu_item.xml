@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingLeft="20dp"
     android:paddingRight="10dp"
+
     >
 
     <RelativeLayout
@@ -28,28 +29,28 @@
         <jaywhy13.gycweb.components.FontifiedTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Menu Item Title"
+            android:text=""
             android:id="@+id/menu_caption"
             android:layout_marginLeft="10dp"
-            android:textSize="19sp"
             android:textIsSelectable="false"
             android:singleLine="true"
             android:fontFamily="@string/default_font_bold"
             android:textStyle="bold"
             android:layout_toRightOf="@id/menu_icon"
+            style="@android:style/TextAppearance.Large"
              />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Menu Item"
+            android:text=""
             android:id="@+id/menu_sub_caption"
             android:layout_marginLeft="10dp"
-            android:textSize="14sp"
             android:layout_toRightOf="@id/menu_icon"
             android:layout_below="@id/menu_caption"
             android:singleLine="true"
             android:textColor="#FF8D8D8D"
+            style="@android:style/TextAppearance.Small"
              />
 
         <TextView
@@ -57,12 +58,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/menu_sub_caption_right"
             android:layout_toRightOf="@id/menu_sub_caption"
-             android:textSize="14sp"
             android:layout_marginLeft="10dp"
             android:layout_below="@id/menu_caption"
             android:gravity="right|end"
-            android:text=""
+            style="@android:style/TextAppearance.Small"
             android:textColor="#FF8D8D8D"
-            android:layout_alignParentEnd="true" />
+            android:text=""
+            android:layout_alignParentEnd="true"
+            />
+
     </RelativeLayout>
 </LinearLayout>
