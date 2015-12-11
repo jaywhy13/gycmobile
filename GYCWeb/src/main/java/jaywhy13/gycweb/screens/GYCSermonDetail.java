@@ -2,7 +2,9 @@ package jaywhy13.gycweb.screens;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
